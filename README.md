@@ -13,9 +13,9 @@ In this study, we introduce GraphBAN, a novel out-of-distribution-based CPI pred
 Our experiments, conducted using three benchmark datasets under both transductive and inductive settings, demonstrate that GraphBAN outperforms six state-of-the-art baseline models, achieving the highest overall performance.
 
 ## Framework
-![DrugBAN](image/DrugBAN.jpg)
+![GraphBAN](graphBan_new.png)
 ## System Requirements
-The source code developed in Python 3.8 using PyTorch 1.7.1. The required python dependencies are given below. DrugBAN is supported for any standard computer and operating system (Windows/macOS/Linux) with enough RAM to run. There is no additional non-standard hardware requirements.
+The source code developed in Python 3.8 using PyTorch 1.7.1. The required python dependencies are given below. GraphBAN is supported for any standard computer and operating system (Windows/macOS/Linux) with enough RAM to run. There is no additional non-standard hardware requirements.
 
 ```
 torch>=1.7.1
