@@ -55,14 +55,7 @@ In `datasets/bindingdb` and `datasets/biosnap` folders, we have full data with t
 In `datasets/human` folder, there is full data with transductive split for the in-domain experiment, and with inductive split to alleviate ligand bias.
 
 ## Demo
-We provide DrugBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note it is based on a small sample dataset of bindingdb due to the resource limitation of a free colab account. This demo only takes 3 minutes to complete the training and testing process. For running DrugBAN on the full dataset, we advise GPU ram >= 8GB and CPU ram >= 16GB.
-
-The **expected output and run time** 
-The expected time to run depends on the dataset used to train and the number of epochs.
-For BioSNAP dataset: around 1 minute per each epoch
-For BindingDB dataset: around 2 minutes per each epoch
-For Johnson dataset: around 30 minutes per epoch
-The above runtimes are for a simple computer such as the Google Colab environment.
+We provide DrugBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note it is based on a small sample dataset of bindingdb due to the resource limitation of a free colab account. This demo only takes 1 minute to complete the training. For running DrugBAN on the full dataset, we advise GPU ram >= 8GB and CPU ram >= 16GB.
 
 
 
