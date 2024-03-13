@@ -3,7 +3,7 @@
 <div align="left">
 
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1xs1nS0dGgDq9b0zwYUXVdHFiyE0qwah5?usp=sharing)
+[![Open In Colab](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing)
 
 </div>
 
@@ -55,7 +55,7 @@ In `datasets/bindingdb` and `datasets/biosnap` folders, we have full data with t
 In `datasets/human` folder, there is full data with transductive split for the in-domain experiment, and with inductive split to alleviate ligand bias.
 
 ## Demo
-We provide DrugBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1xs1nS0dGgDq9b0zwYUXVdHFiyE0qwah5?usp=sharing). Note it is based on a small sample dataset of bindingdb due to the resource limitation of a free colab account. This demo only takes 3 minutes to complete the training and testing process. For running DrugBAN on the full dataset, we advise GPU ram >= 8GB and CPU ram >= 16GB.
+We provide DrugBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note it is based on a small sample dataset of bindingdb due to the resource limitation of a free colab account. This demo only takes 3 minutes to complete the training and testing process. For running DrugBAN on the full dataset, we advise GPU ram >= 8GB and CPU ram >= 16GB.
 
 The **expected output and run time** of demo has been provided in the colab notebook for verification.
 
