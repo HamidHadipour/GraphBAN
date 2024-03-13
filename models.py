@@ -45,7 +45,7 @@ def entropy_logits(linear_output):
 
 class GraphBAN(nn.Module):
     def __init__(self, **config):
-        super(DrugBAN, self).__init__()
+        super(GraphBAN, self).__init__()
         drug_in_feats = config["DRUG"]["NODE_IN_FEATS"]
         drug_embedding = config["DRUG"]["NODE_IN_EMBEDDING"]
         drug_hidden_feats = config["DRUG"]["HIDDEN_LAYERS"]
