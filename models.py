@@ -43,7 +43,7 @@ def entropy_logits(linear_output):
     loss_ent = -torch.sum(p * (torch.log(p + 1e-5)), dim=1)
     return loss_ent
 
-class DrugBAN(nn.Module):
+class GraphBAN(nn.Module):
     def __init__(self, **config):
         super(DrugBAN, self).__init__()
         drug_in_feats = config["DRUG"]["NODE_IN_FEATS"]
