@@ -32,8 +32,8 @@ yacs~=0.1.8
 Clone this Github repo and set up a new conda environment. It normally takes about 10 minutes to install on a normal desktop computer.
 ```
 # create a new conda environment
-$ conda create --name drugban python=3.11
-$ conda activate drugban
+$ conda create --name graphban python=3.11
+$ conda activate graphban
 
 # install requried python dependencies
 $ conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=10.2 -c pytorch
