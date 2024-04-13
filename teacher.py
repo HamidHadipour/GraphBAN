@@ -201,7 +201,7 @@ def run_model(epochs, output_file_path, data_file_path):
   for i in range(hidden_channels*2):
     embcol.append(str(i))
 
-  emb_df = pd.DataFrame(data = emb_df, columns=embcol)
+  emb_df.columns = embcol
   emb_df.to_parquet(output_file_path)
   message = f"Saved embeddings to {output_file_path}"
   return message
