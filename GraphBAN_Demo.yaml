@@ -1,8 +1,0 @@
-SOLVER:
-  BATCH_SIZE: 8
-  MAX_EPOCH: 1
-  LR: 5e-5
-  SEED: 42
-
-RESULT:
-  OUTPUT_DIR: "./result/demo"
