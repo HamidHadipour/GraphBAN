@@ -55,7 +55,8 @@ In `datasets/bindingdb` and `datasets/biosnap` folders, we have full data with t
 In `datasets/human` folder, there is full data with transductive split for the in-domain experiment, and with inductive split to alleviate ligand bias.
 
 ## Demo
-We provide DrugBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note it is based on BioSNAP dataset on inductive mode for one epoch, but you can change the setting manually based on the provided comments to run it for other datasets or transductive mode and increase the number of epochs through .yaml config files. For a faster run, it is better to use the GPU-enabled version of Colab.
+We provide DrugBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note it is based on BioSNAP dataset on inductive mode for one epoch, but you can change the setting manually based on the provided comments to run it for other datasets or transductive mode and increase the number of epochs through .yaml config files. 
+##To run the Demo on Google Colab it is necessary to use the GPU-enabled version of Colab.
 
 
 
