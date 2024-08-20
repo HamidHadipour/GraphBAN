@@ -16,9 +16,9 @@ import torch.nn as nn
 #df_val = pd.read_csv("run_bindingdb/transductive/seed20/val_bindingdb20.csv")
 #df_test = pd.read_csv("run_bindingdb/transductive/seed20/test_bindingdb20.csv")
 
-df_train = pd.read_csv("run_pdb/transductive/seed18/train_pdb18.csv")
-df_val = pd.read_csv("run_pdb/transductive/seed18/val_pdb18.csv")
-df_test = pd.read_csv("run_pdb/transductive/seed18/test_pdb18.csv")
+df_train = pd.read_csv("run_celegan/inductive/seed12/source_train_celegan12.csv")
+df_val = pd.read_csv("run_pdb/inductive/seed12/target_train_celegan12.csv")
+df_test = pd.read_csv("run_pdb/inductive/seed12/target_test_celegan12.csv")
 
 '''
 df_train = pd.read_csv("df_test200.csv")
@@ -217,8 +217,8 @@ from torch.nn.utils.weight_norm import weight_norm
 # If you want to change the settings such as number of epochs for teh GraphBAN`s main model change it through GraphBAN_Demo.yaml.
 # If you want to run the model for transductive analysis, use GraphBAN_None_DA.yaml
 #cfg_path = "/content/GraphBAN/GraphBAN_None_DA.yaml"
-#cfg_path = "GraphBAN_DA.yaml"
-cfg_path = "GraphBAN.yaml"
+cfg_path = "GraphBAN_DA.yaml"
+#cfg_path = "GraphBAN.yaml"
 
 cfg = get_cfg_defaults()
 cfg.merge_from_file(cfg_path)
@@ -233,7 +233,7 @@ print(f"Running on: {device}")
 print(f"Hyperparameters:")
 print(dict(cfg))
 
-train_emb = pd.read_parquet("run_pdb/transductive/seed18/pdb18_transductive_teacher_emb.parquet")
+train_emb = pd.read_parquet("Data/run_celegan/inductive/seed12/celegan12_inductive_teacher_emb.parquet")
 #train_emb = pd.read_parquet("output_embeddings.parquet")
 train_emb['Array'] = train_emb.apply(lambda row: np.array(row), axis=1)
 
@@ -255,7 +255,7 @@ multi_generator = MultiDataLoader(dataloaders=[source_generator, target_generato
 training_generator = DataLoader(train_dataset, **params2)
 params1['shuffle'] = False
 params1['drop_last'] = False
-val_generator = DataLoader(val_dataset,**params1)
+val_generator = DataLoader(test_dataset,**params1)
 test_generator = DataLoader(test_dataset,**params1)
 
 modelG = GraphBAN(**cfg).to(device)
