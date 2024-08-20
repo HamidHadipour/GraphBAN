@@ -9,6 +9,8 @@ from prettytable import PrettyTable
 from domain_adaptator import ReverseLayerF
 from tqdm import tqdm
 import torch.nn.functional as F
+from sklearn.preprocessing import StandardScaler
+
 
 class Trainer(object):
     def __init__(self, model, optim, device, train_dataloader, val_dataloader, test_dataloader, opt_da=None, discriminator=None,
@@ -74,6 +76,7 @@ class Trainer(object):
         self.train_table = PrettyTable(train_metric_header)
 
         self.original_random = config["DA"]["ORIGINAL_RANDOM"]
+        self.scaler = StandardScaler()
 
     def da_lambda_decay(self):
         delta_epoch = self.current_epoch - self.da_init_epoch
@@ -121,7 +124,7 @@ class Trainer(object):
                 self.best_epoch = self.current_epoch
             print('Validation at Epoch ' + str(self.current_epoch) + ' with validation loss ' + str(val_loss), " AUROC "
                   + str(auroc) + " AUPRC " + str(auprc))
-        auroc, auprc, f1, sensitivity, specificity, accuracy, test_loss, thred_optim, precision,cm1,y_pred,thred_optim  = self.test(dataloader="test")
+        auroc, auprc, f1, sensitivity, specificity, accuracy, test_loss, thred_optim, precision,cm1,y_pred,thred_optim, y_pred  = self.test(dataloader="test")
         test_lst = ["epoch " + str(self.best_epoch)] + list(map(float2str, [auroc, auprc, f1, sensitivity, specificity,
                                                                             accuracy, thred_optim, test_loss]))
         self.test_table.add_row(test_lst)
@@ -191,14 +194,24 @@ class Trainer(object):
         #teacher_emb256 = self.teacher_emb
         #teacher_emb256 = teacher_emb256.to(self.device)
         num_batches = len(self.train_dataloader)
-        for i, (v_d,sm, v_p, labels, teacher) in enumerate(tqdm(self.train_dataloader)):
+        for i, (v_d,sm, v_p,esm, labels, teacher) in enumerate(tqdm(self.train_dataloader)):
+          
             self.step += 1
-            teacher = torch.tensor(teacher, dtype=torch.float32)
             sm = torch.tensor(sm ,dtype=torch.float32)
-            sm = torch.reshape(sm,(sm.shape[0],1,1024))
-            v_d, sm,  v_p, labels, teacher = v_d.to(self.device),sm.to(self.device), v_p.to(self.device), labels.float().to(self.device), teacher.to(self.device)
+            sm = torch.reshape(sm,(sm.shape[0],1,384))
+
+        
+            
+            esm = torch.tensor(esm ,dtype=torch.float32)
+            esm = torch.reshape(esm,(esm.shape[0],1,1280))
+
+         
+            teacher = torch.tensor(teacher, dtype=torch.float32)
+         
+            v_d, sm,  v_p,esm, labels, teacher = v_d.to(self.device),sm.to(self.device), v_p.to(self.device),esm.to(self.device), labels.float().to(self.device), teacher.to(self.device)
             self.optim.zero_grad()
-            v_d, v_p, f, score = self.model(v_d,sm, v_p)
+            device = self.device
+            v_d, v_p, f, score = self.model(v_d,sm, v_p,esm, device)
             #train_drug_features.append(f)
             #train_protein_features.append(v_p)
             if self.n_class == 1:
@@ -207,9 +220,9 @@ class Trainer(object):
                 n, loss = cross_entropy_logits(score, labels)
             #combined_output = torch.cat(train_drug_features, dim=0)
             #combined_output = combined_output.to(self.device)
-            #z = F.mse_loss(teacher, f)
-            #z = z.item()
-            #loss+=  1 * z
+            z = F.mse_loss(teacher, f)
+            z = z.item()
+            loss+=  1 * z
 
             loss.backward()
             self.optim.step()
@@ -234,36 +247,46 @@ class Trainer(object):
         num_batches = len(self.train_dataloader)
         for i, (batch_s, batch_t) in enumerate(tqdm(self.train_dataloader)):
             self.step += 1
-            v_d, sm, v_p, labels, teacher = batch_s[0].to(self.device), batch_s[1].to(self.device), batch_s[2].to(
-                self.device),batch_s[3].float().to(self.device), batch_s[4].to(self.device)
-            v_d_t, smt, v_p_t, labelst = batch_t[0].to(self.device), batch_t[1].to(self.device), batch_t[2].to(
-                self.device),batch_t[3].float().to(self.device)
+            v_d, sm, v_p,esm, labels, teacher = batch_s[0].to(self.device), batch_s[1].to(self.device), batch_s[2].to(
+                self.device),batch_s[3].to(self.device), batch_s[4].float().to(self.device), batch_s[5].to(self.device)
+            v_d_t, smt, v_p_t,esmt, labelst = batch_t[0].to(self.device), batch_t[1].to(self.device), batch_t[2].to(
+                self.device), batch_t[3].to(self.device) ,batch_t[4].float().to(self.device)
             
             teacher = torch.tensor(teacher, dtype=torch.float32)
             sm = torch.tensor(sm ,dtype=torch.float32)
-            sm = torch.reshape(sm,(sm.shape[0],1,1024))
+            sm = torch.reshape(sm,(sm.shape[0],1,384))
 
             smt = torch.tensor(smt ,dtype=torch.float32)
-            smt = torch.reshape(smt,(smt.shape[0],1,1024))
+            smt = torch.reshape(smt,(smt.shape[0],1,384))
+            
+            esm = torch.tensor(esm ,dtype=torch.float32)
+            esm = torch.reshape(esm,(esm.shape[0],1,1280))
+
+            esmt = torch.tensor(esmt ,dtype=torch.float32)
+            esmt = torch.reshape(esmt,(esmt.shape[0],1,1280))
 
             self.optim.zero_grad()
             self.optim_da.zero_grad()
-            v_d, v_p, f, score = self.model(v_d,sm, v_p)
+            
+            device = self.device
+            v_d, v_p, f, score = self.model(v_d,sm, v_p,esm, device)
+            
+            #teacher_numpy = teacher.detach().cpu().numpy()
+            #teacher_scaled = torch.tensor(self.scaler.fit_transform(teacher_numpy))
+            #teacher_scaled = teacher_scaled.to(self.device)
+            
             if self.n_class == 1:
+              
                 n, model_loss = binary_cross_entropy(score, labels)
             else:
                 n, model_loss = cross_entropy_logits(score, labels)
-            cosine_embedding_loss = torch.nn.CosineEmbeddingLoss()
-            label1 = labels.clone()
-            #label1[label1 == 0] = -1
-            #z = cosine_embedding_loss(teacher, f, label1)
             z = F.mse_loss(teacher, f)
             model_loss+=  1 * z
-            #z = F.mse_loss(teacher, f)
-            #z = z.item()
-            #model_loss+=  2 * z
+            
+            
+            
             if self.current_epoch >= self.da_init_epoch:
-                v_d_t, v_p_t, f_t, t_score = self.model(v_d_t,smt, v_p_t)
+                v_d_t, v_p_t, f_t, t_score = self.model(v_d_t,smt, v_p_t,esmt, device)
                 if self.da_method == "CDAN":
                     reverse_f = ReverseLayerF.apply(f, self.alpha)
                     softmax_output = torch.nn.Softmax(dim=1)(score)
@@ -352,19 +375,26 @@ class Trainer(object):
         num_batches = len(data_loader)
         with torch.no_grad():
             self.model.eval()
-            for i, (v_d, sm, v_p, labels) in enumerate(data_loader):
+            for i, (v_d, sm, v_p,esm, labels) in enumerate(data_loader):
                 sm = torch.tensor(sm ,dtype=torch.float32)
-                sm = torch.reshape(sm,(sm.shape[0],1,1024))
-                v_d, sm,  v_p, labels = v_d.to(self.device),sm.to(self.device), v_p.to(self.device), labels.float().to(self.device)
+                sm = torch.reshape(sm,(sm.shape[0],1,384))
+                esm = torch.tensor(esm ,dtype=torch.float32)
+                esm = torch.reshape(esm,(sm.shape[0],1,1280))
+                v_d, sm,  v_p, esm, labels = v_d.to(self.device),sm.to(self.device), v_p.to(self.device), esm.to(self.device), labels.float().to(self.device)
+                device = self.device
+                
+              
                 if dataloader == "val":
-                    v_d, v_p, f, score = self.model(v_d,sm, v_p)
+                    v_d, v_p, f, score = self.model(v_d,sm, v_p,esm, device)
                     #val_drug_features.append(v_d)
                     #val_protein_features.append(v_p)
                 elif dataloader == "test":
-                    v_d, v_p, f, score = self.best_model(v_d,sm, v_p)
+                    v_d, v_p, f, score = self.best_model(v_d,sm, v_p,esm, device)
                     #test_drug_features.append(v_d)
                     #test_protein_features.append(v_p)
                 if self.n_class == 1:
+                    weights = torch.tensor([0.3 if label == 1 else 0.7 for label in labels])
+                    weights = weights.to(self.device)
                     n, loss = binary_cross_entropy(score, labels)
                 else:
                     n, loss = cross_entropy_logits(score, labels)
@@ -384,12 +414,12 @@ class Trainer(object):
             y_pred_s = [1 if i else 0 for i in (y_pred >= thred_optim)]
             cm1 = confusion_matrix(y_label, y_pred_s)
             accuracy = (cm1[0, 0] + cm1[1, 1]) / sum(sum(cm1))
-            sensitivity = cm1[0, 0] / (cm1[0, 0] + cm1[0, 1])
-            specificity = cm1[1, 1] / (cm1[1, 0] + cm1[1, 1])
+            sensitivity = cm1[1, 1] / (cm1[1, 0] + cm1[1, 1])
+            specificity = cm1[0, 0] / (cm1[0, 0] + cm1[0, 1])
             if self.experiment:
                 self.experiment.log_curve("test_roc curve", fpr, tpr)
                 self.experiment.log_curve("test_pr curve", recall, prec)
             precision1 = precision_score(y_label, y_pred_s)
-            return auroc, auprc, np.max(f1[5:]), sensitivity, specificity, accuracy, test_loss, thred_optim, precision1, cm1,y_pred,thred_optim 
+            return auroc, auprc, np.max(f1[5:]), sensitivity, specificity, accuracy, test_loss, thred_optim, precision1, cm1,y_pred,thred_optim,y_pred 
         else:
             return auroc, auprc, test_loss

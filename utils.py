@@ -49,14 +49,14 @@ def set_seed(seed=1000):
 
 
 def graph_collate_func(x):
-    d,smile, p, y = zip(*x)
+    d,smile, p, esm, y = zip(*x)
     d = dgl.batch(d)
-    return d, torch.tensor(np.array(smile)), torch.tensor(np.array(p)), torch.tensor(y)
+    return d, torch.tensor(np.array(smile)), torch.tensor(np.array(p)), torch.tensor(np.array(esm)), torch.tensor(y)
 
 def graph_collate_func2(x):
-    d,smile, p, y,teacher_emb = zip(*x)
+    d,smile, p, esm, y,teacher_emb = zip(*x)
     d = dgl.batch(d)
-    return d, torch.tensor(np.array(smile)), torch.tensor(np.array(p)), torch.tensor(y), torch.tensor(np.array(teacher_emb))
+    return d, torch.tensor(np.array(smile)), torch.tensor(np.array(p)), torch.tensor(np.array(esm)), torch.tensor(y), torch.tensor(np.array(teacher_emb))
 
 def mkdir(path):
     path = path.strip()

@@ -8,6 +8,7 @@ from ban import BANLayer
 from torch.nn.utils.weight_norm import weight_norm
 from tqdm import tqdm
 from rdkit.Chem import AllChem
+from sklearn.preprocessing import StandardScaler
 import sys
 sys.path.append('/usr/local/lib/python3.7/site-packages/')
 
@@ -17,14 +18,21 @@ try:
 except ImportError:
   print('Stopping RUNTIME. Colaboratory will restart automatically. Please run again.')
   exit()
+
 def binary_cross_entropy(pred_output, labels):
     loss_fct = torch.nn.BCELoss()
     m = nn.Sigmoid()
     n = torch.squeeze(m(pred_output), 1)
     loss = loss_fct(n, labels)
     return n, loss
-
-
+'''
+def binary_cross_entropy(pred_output, labels, weights):
+    loss_fct = torch.nn.BCELoss(weight=weights)
+    m = nn.Sigmoid()
+    n = torch.squeeze(m(pred_output), 1)
+    loss = loss_fct(n, labels.float())
+    return n, loss
+'''
 def cross_entropy_logits(linear_output, label, weights=None):
     class_output = F.log_softmax(linear_output, dim=1)
     n = F.softmax(linear_output, dim=1)[:, 1]
@@ -63,15 +71,18 @@ class GraphBAN(nn.Module):
                                            padding=drug_padding,
                                            hidden_feats=drug_hidden_feats)
         self.molecule_FCFP = LinearTransform()
+        self.protein_esm = LinearTransform_esm()
         self.mol_fusion = molFusion()
+        self.pro_fusion = proFusion()
         self.protein_extractor = ProteinCNN(protein_emb_dim, num_filters, kernel_size, protein_padding)
 
         self.bcn = weight_norm(
             BANLayer(v_dim=drug_hidden_feats[-1], q_dim=num_filters[-1], h_dim=mlp_in_dim, h_out=ban_heads),
             name='h_mat', dim=None)
         self.mlp_classifier = MLPDecoder(mlp_in_dim, mlp_hidden_dim, mlp_out_dim, binary=out_binary)
+        self.scaler = StandardScaler()
 
-    def forward(self, bg_d, bg_smiles, v_p, mode="train"):
+    def forward(self, bg_d, bg_smiles, v_p,v_p_esm, device, mode="train"):
         v_d = self.drug_extractor(bg_d)
 
         v_smiles_fcfp = self.molecule_FCFP(bg_smiles)
@@ -80,13 +91,21 @@ class GraphBAN(nn.Module):
 
 
         v_p = self.protein_extractor(v_p)
-        f, att = self.bcn(v_fusion, v_p)
+        v_p_esm = self.protein_esm(v_p_esm)
+        v_p_fusion = self.pro_fusion(v_p, v_p_esm)
+        f, att = self.bcn(v_fusion, v_p_fusion)
+        
+        #f_numpy = f.detach().cpu().numpy()
+        #_scaled = torch.tensor(self.scaler.fit_transform(f_numpy))
+        #f_scaled = f_scaled.to(device)
         #f = torch.cat((v_fusion ,v_p), dim=0)
+        
         score = self.mlp_classifier(f)
         if mode == "train":
-            return v_fusion, v_p, f, score
+            return v_fusion, v_p_fusion, f, score
         elif mode == "eval":
-            return v_fusion, v_p, score, f
+            return v_fusion, v_p_fusion, score, f
+
 
 
 class MolecularGCN(nn.Module):
@@ -110,7 +129,7 @@ class MolecularGCN(nn.Module):
 class LinearTransform(nn.Module):
     def __init__(self):
         super(LinearTransform, self).__init__()
-        self.linear1 = nn.Linear(1024, 512)
+        self.linear1 = nn.Linear(384, 512)#for seed 12 for better score it was on 384>64>128
         self.linear2 = nn.Linear(512, 128)
         self.dropout = nn.Dropout(p=0.5)
     def forward(self, x):
@@ -127,8 +146,25 @@ class LinearTransform(nn.Module):
 
         return x
 
+class LinearTransform_esm(nn.Module):
+    def __init__(self):
+        super(LinearTransform_esm, self).__init__()
+        self.linear1 = nn.Linear(1280, 512)
+        self.linear2 = nn.Linear(512, 128)
+        self.dropout = nn.Dropout(p=0.5)
+    def forward(self, x):
+        # Reshape the input tensor to [batch_size, 1024]
+        x = x.view(x.size(0), -1)
 
+        # Apply the first linear layer
+        x = torch.relu(self.linear1(x))
+        x = self.dropout(x)
+        x = x.unsqueeze(1)  # Add a singleton dimension to match [batch_size, 1, 512]
 
+        # Apply the second linear layer
+        x = torch.relu(self.linear2(x))
+
+        return x
 
 class molFusion(nn.Module):
   def __init__(self):
@@ -146,6 +182,23 @@ class molFusion(nn.Module):
     final_result = torch.add(result_2, A)
     return final_result
 
+
+
+class proFusion(nn.Module):
+  def __init__(self):
+    super(proFusion, self).__init__()
+
+  def forward(self, A, B):
+
+  # 1. Perform element-wise multiplication A * B
+    result_1 = torch.matmul(A, B.transpose(1,2))
+
+# 2. Perform element-wise multiplication (result_1) * (transpose of B)
+    result_2 = torch.matmul(result_1, B)
+
+# 3. Perform element-wise addition with A
+    final_result = torch.add(result_2, A)
+    return final_result
     
 class ProteinCNN(nn.Module):
     def __init__(self, embedding_dim, num_filters, kernel_size, padding=True):

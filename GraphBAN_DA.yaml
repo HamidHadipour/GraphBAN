@@ -1,9 +1,9 @@
 SOLVER:
   BATCH_SIZE: 32
-  MAX_EPOCH: 1
-  LR: 1e-4
+  MAX_EPOCH: 50
+  LR: 1e-5
   DA_LR: 5e-5
-  SEED: 10
+  SEED: 20
 
 DA:
   TASK: True
