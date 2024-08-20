@@ -16,9 +16,9 @@ import torch.nn as nn
 #df_val = pd.read_csv("run_bindingdb/transductive/seed20/val_bindingdb20.csv")
 #df_test = pd.read_csv("run_bindingdb/transductive/seed20/test_bindingdb20.csv")
 
-df_train = pd.read_csv("run_celegan/inductive/seed12/source_train_celegan12.csv")
-df_val = pd.read_csv("run_pdb/inductive/seed12/target_train_celegan12.csv")
-df_test = pd.read_csv("run_pdb/inductive/seed12/target_test_celegan12.csv")
+df_train = pd.read_csv("Data/run_celegan/inductive/seed12/source_train_celegan12.csv")
+df_val = pd.read_csv("Data/run_pdb/inductive/seed12/target_train_celegan12.csv")
+df_test = pd.read_csv("Data/run_pdb/inductive/seed12/target_test_celegan12.csv")
 
 '''
 df_train = pd.read_csv("df_test200.csv")
