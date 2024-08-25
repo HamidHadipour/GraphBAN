@@ -49,10 +49,15 @@ $ cd GraphBAN
 ```
 
 
-## Datasets
-The `datasets` folder contains all experimental data used in GraphBAN: [BindingDB](https://www.bindingdb.org/bind/index.jsp) [1], [BioSNAP](https://github.com/kexinhuang12345/MolTrans) [2] and [Johnson](https://github.com/lifanchen-simm/transformerCPI) [3]. 
-In `datasets/bindingdb` and `datasets/biosnap` folders, we have full data with two random and clustering-based splits for both in-domain and cross-domain experiments.
-In `datasets/human` folder, there is full data with transductive split for the in-domain experiment, and with inductive split to alleviate ligand bias.
+## Data
+In order to train GraphBAN, you need to provide your data as a CSV file with a header row of 'SMILES', 'Protein', and 'Y' ordered. The 'Y' indicates binary values  (i.e. 0s and 1s) that are classification indicators.
+Currently, we provided the splits of all five datasets used in our paper (BindingDB, BioSNAP, KIBA, C.elegans, and PDBbind 2016) within two split types of transductive and inductive, each within five different seeds. 
+## Pre-processing
+If you need to bring your dataset and need to split it into transductive and inductive, please use the codes provided in preprocessing/clustering folder.
+```
+python preprocessing/clustering/inductive_split.py --path_your_dataset --train <path> --val <path> --test <path> --seed <int>
+python preprocessing/clustering/transductive_split.py --path_your_dataset --train <path> --val <path> --test <path> --seed <int>
+```
 
 ## Demo
 We provide DrugBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note it is based on BioSNAP dataset on inductive mode for one epoch, but you can change the setting manually based on the provided comments to run it for other datasets or transductive mode and increase the number of epochs through .yaml config files. 
