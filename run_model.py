@@ -10,28 +10,39 @@ Original file is located at
 import pandas as pd
 import torch
 import torch.nn as nn
+import argparse
 
+# Set up argument parser
+parser = argparse.ArgumentParser(description="Load train, val, test datasets and additional parameters.")
 
-#df_train = pd.read_csv("run_bindingdb/transductive/seed20/train_bindingdb20.csv")
-#df_val = pd.read_csv("run_bindingdb/transductive/seed20/val_bindingdb20.csv")
-#df_test = pd.read_csv("run_bindingdb/transductive/seed20/test_bindingdb20.csv")
+parser.add_argument("--train_path", type=str, required=True, help="Path to the train dataset.")
+parser.add_argument("--val_path", type=str, required=True, help="Path to the validation dataset.")
+parser.add_argument("--test_path", type=str, required=True, help="Path to the test dataset.")
+parser.add_argument("--seed", type=int, required=True, help="Seed number for random processes.")
+parser.add_argument("--mode", type=str, choices=['inductive', 'transductive'], required=True, help="Mode of operation: 'inductive' or 'transductive'.")
+parser.add_argument("--teacher_path", type=str, required=True, help="Path to the teacher Parquet file.")
 
-df_train = pd.read_csv("Data/run_celegan/inductive/seed12/source_train_celegan12.csv")
-df_val = pd.read_csv("Data/run_celegan/inductive/seed12/target_train_celegan12.csv")
-df_test = pd.read_csv("Data/run_celegan/inductive/seed12/target_test_celegan12.csv")
+# Parse the command line arguments
+args = parser.parse_args()
 
-'''
-df_train = pd.read_csv("df_test200.csv")
-df_val = pd.read_csv("df_test200.csv")
-df_test = pd.read_csv("df_test200.csv")
-'''
+# Load the datasets using the provided paths
+df_train = pd.read_csv(args.train_path)
+df_val = pd.read_csv(args.val_path)
+df_test = pd.read_csv(args.test_path)
+
+ 
+# Print the shapes of the datasets
+print(df_train.shape)
+print(df_val.shape)
+print(df_test.shape)
+print("Seed: ", args. seed)
+print("Mode: ", args.mode)
+#print("Teacher data shape: ", df_teacher.shape)
+
 df_test['Protein'] = df_test['Protein'].apply(lambda x: x[:1022] if len(x) > 1022 else x)
 df_train['Protein'] = df_train['Protein'].apply(lambda x: x[:1022] if len(x) > 1022 else x)
 df_val['Protein'] = df_val['Protein'].apply(lambda x: x[:1022] if len(x) > 1022 else x)
 
-print(df_train.shape)
-print(df_val.shape)
-print(df_test.shape)
 
 import torch
 import esm
@@ -105,7 +116,7 @@ df_test = pd.merge(df_test, x, on='Protein', how='left')
 print('test esm is done!\n')
 
 
-print('pass')
+print('ESM feature extraction: pass')
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, RobertaModel
 #from transformers import TrainingArguments, Trainer, IntervalStrategy
 
@@ -167,7 +178,9 @@ df_testu['fcfp'] = emblist_test
 df_train = pd.merge(df_train, df_trainu[['SMILES', 'fcfp']], on='SMILES', how='left')
 df_val = pd.merge(df_val, df_valu[['SMILES', 'fcfp']], on='SMILES', how='left')
 df_test = pd.merge(df_test, df_testu[['SMILES', 'fcfp']], on='SMILES', how='left')
-print('chembert is done\n')
+print('chemBERTa feature extraction: pass\n')
+
+
 from models import GraphBAN
 
 from time import time
@@ -216,16 +229,21 @@ from torch.nn.utils.weight_norm import weight_norm
 
 # If you want to change the settings such as number of epochs for teh GraphBAN`s main model change it through GraphBAN_Demo.yaml.
 # If you want to run the model for transductive analysis, use GraphBAN_None_DA.yaml
-#cfg_path = "/content/GraphBAN/GraphBAN_None_DA.yaml"
-cfg_path = "GraphBAN_DA.yaml"
-#cfg_path = "GraphBAN.yaml"
+if args.mode == 'inductive':
+    cfg_path = "GraphBAN_DA.yaml"
+else:
+    cfg_path = "GraphBAN.yaml"
+
+
+
+
 
 cfg = get_cfg_defaults()
 cfg.merge_from_file(cfg_path)
 cfg.freeze()
 torch.cuda.empty_cache()
 warnings.filterwarnings("ignore")
-set_seed(cfg.SOLVER.SEED)
+set_seed(args.seed)
 mkdir(cfg.RESULT.OUTPUT_DIR)
 experiment = None
 print(f"Config yaml: {cfg_path}")
@@ -233,8 +251,8 @@ print(f"Running on: {device}")
 print(f"Hyperparameters:")
 print(dict(cfg))
 
-train_emb = pd.read_parquet("Data/run_celegan/inductive/seed12/celegan12_inductive_teacher_emb.parquet")
-#train_emb = pd.read_parquet("output_embeddings.parquet")
+
+train_emb = pd.read_parquet(args.teacher_path)
 train_emb['Array'] = train_emb.apply(lambda row: np.array(row), axis=1)
 
 # Drop all columns except the 'Array' column
@@ -255,7 +273,11 @@ multi_generator = MultiDataLoader(dataloaders=[source_generator, target_generato
 training_generator = DataLoader(train_dataset, **params2)
 params1['shuffle'] = False
 params1['drop_last'] = False
-val_generator = DataLoader(test_dataset,**params1)
+if args.mode == 'inductive':
+    val_generator = DataLoader(test_dataset,**params1)
+else:
+    val_generator = DataLoader(val_dataset,**params1)
+
 test_generator = DataLoader(test_dataset,**params1)
 
 modelG = GraphBAN(**cfg).to(device)
