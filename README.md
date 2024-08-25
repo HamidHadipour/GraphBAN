@@ -58,9 +58,34 @@ If you need to bring your dataset and need to split it into transductive and ind
 python preprocessing/clustering/inductive_split.py --path_your_dataset --train <path> --val <path> --test <path> --seed <int>
 python preprocessing/clustering/transductive_split.py --path_your_dataset --train <path> --val <path> --test <path> --seed <int>
 ```
+## Training
+To train the GraphBAN, run:
+```
+python run_model.py --train_path <path> --val_path <path> --test_path <path> --seed <int> --mode <[inductive, transductive]> --teacher_path <path>
+```
+The first three arguments are the paths of your data splits. The --mode argument is to denote your analysis is transductive or inductive. The teacher-path is the path to the parquet file that contains the embedding of your trainset that captures by the teacher module of the model.
+For the presented data splits in this project, all the teacher embeddings have provided already.
+If you need to capture the teacher embedding for your dataset, run the below code:
+
+```
+python teacher_gae.py --train_path <path> --save_path <path> --epochs <int>
+```
+## prediction
+To load a trained model and make predictions, run predict.py and specify:
+
+--test_path <path> Path to the data to predict on.
+--trained_model <path> Path to the trained .pth file.
+--save_dir <path> Path you want to save the predictions.
+
+For example,
+```
+python prediction.py --test_path Data/biosnap/inductive/seed12/target_test_biosnap12.csv --trained_model predictions/trained_models/biosnap/inductive/seed12/best_model_epoch_45.pth --save_dir biosnap12_predictions.csv
+```
+## Hyperparameters
+In the case that you need to set your hyperparameters, you can check the config.py and/or GraphBAN_DA.yaml (for inductive settings) and GraphBAN (for transductive settings).
 
 ## Demo
-We provide DrugBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note it is based on BioSNAP dataset on inductive mode for one epoch, but you can change the setting manually based on the provided comments to run it for other datasets or transductive mode and increase the number of epochs through .yaml config files. 
+We provide GraphBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note: A sample dataset with 200 interactions provided to examining the training procedure. Also, an example of retrieving the prediction scores captured by inductive analysis on the BioSNAP dataset is provided to test a trained model and reproduce the results reported in the paper. 
 **Note: To run the Demo on Google Colab it is necessary to use the GPU-enabled version of Colab.**
 
 
