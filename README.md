@@ -63,6 +63,8 @@ To train the GraphBAN, run:
 ```
 python run_model.py --train_path <path> --val_path <path> --test_path <path> --seed <int> --mode <[inductive, transductive]> --teacher_path <path>
 ```
+The result will be saved in a directory named result/ that includes the trained model.pth and the prediction scores in a CSV file.
+
 The first three arguments are the paths of your data splits. The --mode argument is to denote your analysis is transductive or inductive. The teacher-path is the path to the parquet file that contains the embedding of your trainset that captures by the teacher module of the model.
 For the presented data splits in this project, all the teacher embeddings have provided already.
 If you need to capture the teacher embedding for your dataset, run the below code:
