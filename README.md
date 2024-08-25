@@ -1,4 +1,4 @@
-# GraphBAN: A novel out-of-distribution-based compound-protein interaction prediction approach using graph knowledge distillation and bilinear attention network
+# GraphBAN: A Novel Inductive Graph-Based Approach for Enhanced Prediction of Compound-Protein Interactions
 
 <div align="left">
 
