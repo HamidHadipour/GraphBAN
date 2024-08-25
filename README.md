@@ -91,13 +91,11 @@ We provide GraphBAN running demo through a cloud Jupyter notebook on [![Open In 
 
 
 ## Acknowledgements
-This implementation is inspired and partially based on earlier works [4].
+This implementation is inspired and partially based on earlier works [1].
 
 
 
 ## References
-    [1] Liu, Tiqing, Yuhmei Lin, Xin Wen, Robert N. Jorissen, and Michael K. Gilson (2007). BindingDB: a web-accessible database of experimentally determined protein–ligand binding affinities. Nucleic acids research, 35(suppl_1), D198-D201.
-    [2] Huang, Kexin, Cao Xiao, Lucas M. Glass, and Jimeng Sun (2021). MolTrans: Molecular Interaction Transformer for drug–target interaction prediction. Bioinformatics, 37(6), 830-836.
-    [3] Johnson EO, LaVerriere E, Office E, Stanley M, Meyer E, Kawate T, et al. Large-scale chemical–genetics yields new M. tuberculosis inhibitor classes. Nature. 2019 Jul 4;571(7763):72–8. 
-    [4] Bai P, Miljković F, John B, Lu H. Interpretable bilinear attention network with domain adaptation improves drug–target prediction. Nat Mach Intell. 2023 Feb 1;5(2):126–36. 
+
+    [1] Bai P, Miljković F, John B, Lu H. Interpretable bilinear attention network with domain adaptation improves drug–target prediction. Nat Mach Intell. 2023 Feb 1;5(2):126–36. 
 
