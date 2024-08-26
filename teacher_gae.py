@@ -19,7 +19,7 @@ parser.add_argument("--train_path", type=str, required=True, help="Path to the t
 parser.add_argument("--seed", type=int, required=True, help="Seed number for random processes.")
 parser.add_argument("--epoch", type=int, required=True, help="Number of epochs for training the GAE model.")
 parser.add_argument("--teacher_path", type=str, required=True, help="Path to the teacher Parquet file.")
-
+args = parser.parse_args()
 
 
 # Import other necessary libraries here...
