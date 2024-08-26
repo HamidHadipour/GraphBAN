@@ -64,7 +64,7 @@ class Trainer(object):
         self.output_dir = config["RESULT"]["OUTPUT_DIR"]
 
       
-        test_metric_header = ["# Train Dataset", "AUROC", "AUPRC", "F1", "Sensitivity", "Specificity", "Accuracy",
+        test_metric_header = ["#", "AUROC", "AUPRC", "F1", "Sensitivity", "Specificity", "Accuracy",
                               "Threshold", "Test_loss"]
       
         self.test_table = PrettyTable(test_metric_header)
@@ -89,7 +89,7 @@ class Trainer(object):
         print('Test at Best Model of Epoch ' + str(self.best_epoch) + ' with test loss ' + str(test_loss), " AUROC "
               + str(auroc) + " AUPRC " + str(auprc) + " f1-score " + str(f1)+ " Sensitivity " + str(sensitivity) + " Specificity " +
               str(specificity) + " Accuracy " + str(accuracy) + " Thred_optim " + str(thred_optim))
-        test_lst = [str('kiba12')] + list(map(float2str, [auroc, auprc, f1, sensitivity, specificity,
+        test_lst = [str('')] + list(map(float2str, [auroc, auprc, f1, sensitivity, specificity,
                                                                             accuracy, thred_optim, test_loss]))
 
         self.test_table.add_row(test_lst)
