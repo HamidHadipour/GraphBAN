@@ -30,7 +30,7 @@ import torch
 import esm
 import pandas as pd
 import numpy as np
-print('Downloading the ESM model\n")
+print("Downloading the ESM model...\n")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 esm_model, alphabet = esm.pretrained.esm1b_t33_650M_UR50S()
 batch_converter = alphabet.get_batch_converter()
@@ -249,7 +249,7 @@ print(cm1)
 df_test['pred'] = pred
 df_test.to_csv(args.save_dir , index = False)
 print('The prediction scores saved in result/ directory\n')
-print('The predicted probabilities saved in " + args.save_dir)
+print("The predicted probabilities saved in " + args.save_dir)
 '''
 
 '''
