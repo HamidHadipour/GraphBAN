@@ -64,7 +64,7 @@ class Trainer(object):
         self.output_dir = config["RESULT"]["OUTPUT_DIR"]
 
       
-        test_metric_header = ["#", "AUROC", "AUPRC", "F1", "Sensitivity", "Specificity", "Accuracy",
+        test_metric_header = ["# Train Dataset", "AUROC", "AUPRC", "F1", "Sensitivity", "Specificity", "Accuracy",
                               "Threshold", "Test_loss"]
       
         self.test_table = PrettyTable(test_metric_header)
