@@ -50,7 +50,8 @@ $ cd GraphBAN
 
 
 ## Data
-In order to train GraphBAN, you need to provide your data as a CSV file with a header row of 'SMILES', 'Protein', and 'Y' ordered. The 'Y' indicates binary values  (i.e. 0s and 1s) that are classification indicators.
+In order to train GraphBAN, you need to provide your data as a CSV file with a header row of 'SMILES', 'Protein', and 'Y' ordered.<br>
+The 'Y' indicates binary values  (i.e. 0s and 1s) that are classification indicators.<br>
 Currently, we provided the splits of all five datasets used in our paper (BindingDB, BioSNAP, KIBA, C.elegans, and PDBbind 2016) within two split types of transductive and inductive, each within five different seeds. 
 ## Pre-processing
 If you need to bring your dataset and need to split it into transductive and inductive, please use the codes provided in preprocessing/clustering folder.
@@ -76,8 +77,9 @@ For the presented data splits in this project, all the teacher embeddings have b
 If you need to capture the teacher embedding for your dataset, run the code below:<br>
 
 ```
-python teacher_gae.py --train_path <path> --save_path <path> --epochs <int>
+python teacher_gae.py --train_path <path> --seed <int> --save_path <path> --epochs <int>
 ```
+--save_path should be the path of a parquet file.<br>
 ## prediction
 To load a trained model and make predictions, run predict.py and specify:
 
