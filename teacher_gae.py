@@ -10,10 +10,21 @@ from torchmetrics import AUROC
 
 import torch_geometric.transforms as T
 from torch import nn
+import argparse
+
+# Set up argument parser
+parser = argparse.ArgumentParser(description="Load train, val, test datasets and additional parameters.")
+
+parser.add_argument("--train_path", type=str, required=True, help="Path to the train dataset.")
+parser.add_argument("--seed", type=int, required=True, help="Seed number for random processes.")
+parser.add_argument("--epoch", type=int, required=True, help="Number of epochs for training the GAE model.")
+parser.add_argument("--teacher_path", type=str, required=True, help="Path to the teacher Parquet file.")
+
+
 
 # Import other necessary libraries here...
 import random
-seed_value=20
+seed_value=args.seed
 torch.manual_seed(seed_value)
 random.seed(seed_value)
 np.random.seed(seed_value)
@@ -176,7 +187,7 @@ def run_model(output_file_path, data_file_path):
     model.encoder2(data.x_dict, data.edge_index_dict)
   optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
-  for epoch in range(1, 100):
+  for epoch in range(0, args.epoch):
 
     loss = train(model, optimizer, data)
     train_rmse, emb, ed = test_auroc(model, data)
@@ -191,13 +202,13 @@ def run_model(output_file_path, data_file_path):
     embcol.append(str(i))
 
   emb_df.columns = embcol
-  emb_df.to_parquet('pdb20_transductive_teacher_emb.parquet')
+  emb_df.to_parquet(args.teacher_path)
   message = f"Saved embeddings to {output_file_path}"
   return message
   
 if __name__ == "__main__":
-  path = 'run_pdb/transductive/seed20/train_pdb20.csv'
+  path = args.train_path
   
 
-  output_name = 'pdb20trans'
+  output_name = args.teacher_path
   print(run_model(output_name, path ))
