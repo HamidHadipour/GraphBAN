@@ -65,13 +65,15 @@ python run_model.py --train_path <path> --val_path <path> --test_path <path> --s
 ```
 **For example**
 ```
-python run_model.py --train_path Data/df_train200.csv --val_path Data/df_val.csv --test_path Data/df_test.csv --mode inductive --seed 12 --teacher_path Data/df_train200_teaqcher_embeddings.parquet
+python run_model.py --train_path Data/sample_data/df_train200.csv --val_path Data/sample_data/df_val.csv --test_path Data/sample_data/df_test.csv --mode inductive --seed 12 --teacher_path Data/sample_data/df_train200_teaqcher_embeddings.parquet
 ```
-The result will be saved in a directory named result/ that includes the trained model.pth and the prediction scores in a CSV file.
+The result will be saved in a directory named **result/** that includes the trained model.pth and the prediction scores in a CSV file.
 
-The first three arguments are the paths of your data splits. The --mode argument is to denote your analysis is transductive or inductive. The teacher-path is the path to the parquet file that contains the embedding of your trainset that captures by the teacher module of the model.
-For the presented data splits in this project, all the teacher embeddings have provided already.
-If you need to capture the teacher embedding for your dataset, run the below code:
+The first three arguments are the paths of your data splits.<br>
+The --mode argument is to denote whether your analysis is transductive or inductive.<br>
+The --teacher-path is the path to the parquet file that contains the embedding of your trainset that is captured by the Teacher block of the model.<br>
+For the presented data splits in this project, all the teacher embeddings have been provided already.<br>
+If you need to capture the teacher embedding for your dataset, run the code below:<br>
 
 ```
 python teacher_gae.py --train_path <path> --save_path <path> --epochs <int>
@@ -79,9 +81,9 @@ python teacher_gae.py --train_path <path> --save_path <path> --epochs <int>
 ## prediction
 To load a trained model and make predictions, run predict.py and specify:
 
---test_path <path> Path to the data to predict on.
---trained_model <path> Path to the trained .pth file.
---save_dir <path> Path you want to save the predictions.
+--test_path <path> Path to the data to predict on.<br>
+--trained_model <path> Path to the trained .pth file.<br>
+--save_dir <path> Path you want to save the predictions.<br>
 ```
 python predictions/predict.py --test_path <path> --trained_model <path> --save_dir <path>
 ```
@@ -97,8 +99,8 @@ We provide GraphBAN running demo through a cloud Jupyter notebook on [![Open In 
 **Note: To run the Demo on Google Colab it is necessary to use the GPU-enabled version of Colab.**
 
 ## Other Folders
-**ablation** is the directory that saved the trained models provided for the ablation studies.
-**casestudy** is the directory that saved the data and trained models provided in our case study section.
+**Ablation_study** is the directory that saved the trained models provided for the ablation studies.<br>
+**case_study** is the directory that saved the data and trained models provided in our case study section.<br>
 
 ## Acknowledgements
 This implementation is inspired and partially based on earlier works [1].
