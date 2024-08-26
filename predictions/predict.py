@@ -247,9 +247,9 @@ result, cm1, pred = trainer.train()
 print('confusion matrix')
 print(cm1)
 df_test['pred'] = pred
-df_test.to_csv(args.save_dir , index = False)
+df_test.to_csv('result/'+args.save_dir , index = False)
 print('The prediction scores saved in result/ directory\n')
-print("The predicted probabilities saved in " + args.save_dir)
+print("The predicted probabilities saved in result/" + args.save_dir)
 '''
 
 '''
