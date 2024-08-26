@@ -63,6 +63,10 @@ To train the GraphBAN, run:
 ```
 python run_model.py --train_path <path> --val_path <path> --test_path <path> --seed <int> --mode <[inductive, transductive]> --teacher_path <path>
 ```
+**For example**
+```
+python run_model.py --train_path Data/df_train200.csv --val_path Data/df_val.csv --test_path Data/df_test.csv --mode inductive --seed 12 --teacher_path Data/df_train200_teaqcher_embeddings.parquet
+```
 The result will be saved in a directory named result/ that includes the trained model.pth and the prediction scores in a CSV file.
 
 The first three arguments are the paths of your data splits. The --mode argument is to denote your analysis is transductive or inductive. The teacher-path is the path to the parquet file that contains the embedding of your trainset that captures by the teacher module of the model.
@@ -78,19 +82,23 @@ To load a trained model and make predictions, run predict.py and specify:
 --test_path <path> Path to the data to predict on.
 --trained_model <path> Path to the trained .pth file.
 --save_dir <path> Path you want to save the predictions.
-
-For example,
 ```
-python prediction.py --test_path Data/biosnap/inductive/seed12/target_test_biosnap12.csv --trained_model predictions/trained_models/biosnap/inductive/seed12/best_model_epoch_45.pth --save_dir biosnap12_predictions.csv
+python predictions/predict.py --test_path <path> --trained_model <path> --save_dir <path>
+```
+**For example**,
+```
+python predictions/prediction.py --test_path Data/biosnap/inductive/seed12/target_test_biosnap12.csv --trained_model predictions/trained_models/biosnap/inductive/seed12/best_model_epoch_45.pth --save_dir biosnap12_predictions.csv
 ```
 ## Hyperparameters
-In the case that you need to set your hyperparameters, you can check the config.py and/or GraphBAN_DA.yaml (for inductive settings) and GraphBAN (for transductive settings).
+In the case that you need to set your hyperparameters, you can check the **config.py** and/or **GraphBAN_DA.yaml** (for inductive settings) and **GraphBAN.yaml** (for transductive settings).
 
 ## Demo
 We provide GraphBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note: A sample dataset with 200 interactions provided to examining the training procedure. Also, an example of retrieving the prediction scores captured by inductive analysis on the BioSNAP dataset is provided to test a trained model and reproduce the results reported in the paper. 
 **Note: To run the Demo on Google Colab it is necessary to use the GPU-enabled version of Colab.**
 
-
+## Other Folders
+**ablation** is the directory that saved the trained models provided for the ablation studies.
+**casestudy** is the directory that saved the data and trained models provided in our case study section.
 
 ## Acknowledgements
 This implementation is inspired and partially based on earlier works [1].
