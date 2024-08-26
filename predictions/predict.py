@@ -23,14 +23,14 @@ args = parser.parse_args()
 df_test = pd.read_csv(args.test_path)
 
 df_test['Protein'] = df_test['Protein'].apply(lambda x: x[:1022] if len(x) > 1022 else x)
-
+print('shape of your dataset\n')
 print(df_test.shape)
 
 import torch
 import esm
 import pandas as pd
 import numpy as np
-
+print('Downloading the ESM model\n")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 esm_model, alphabet = esm.pretrained.esm1b_t33_650M_UR50S()
 batch_converter = alphabet.get_batch_converter()
@@ -217,7 +217,7 @@ if torch.cuda.is_available():
 # Path to your saved model file
 model_path = args.trained_model 
 modelG.load_state_dict(torch.load(model_path))
-
+print("The trained model loaded\n")
 if cfg.DA.USE:
         if cfg["DA"]["RANDOM_LAYER"]:
             domain_dmm = Discriminator(input_size=cfg["DA"]["RANDOM_DIM"], n_class=cfg["DECODER"]["BINARY"]).to(device)
@@ -248,7 +248,8 @@ print('confusion matrix')
 print(cm1)
 df_test['pred'] = pred
 df_test.to_csv(args.save_dir , index = False)
-print('prediction saved in your save directory')
+print('The prediction scores saved in result/ directory\n')
+print('The predicted probabilities saved in " + args.save_dir)
 '''
 
 '''
