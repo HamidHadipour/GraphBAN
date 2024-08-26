@@ -17,7 +17,7 @@ import argparse
 parser = argparse.ArgumentParser(description="Load train, val, test datasets and additional parameters.")
 parser.add_argument("--test_path", type=str, required=True, help="Path to the test dataset.")
 parser.add_argument("--trained_model", type=str, required=True, help='path to the saved model.pth')
-parser.add_argument("--save_dir ", type=str, required=True, help='path to save the csv of prediction probabilities')
+parser.add_argument("--save_dir", type=str, required=True, help='path to save the csv of prediction probabilities')
 args = parser.parse_args()
 
 df_test = pd.read_csv(args.test_path)
