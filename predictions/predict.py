@@ -163,7 +163,7 @@ from utils import set_seed, graph_collate_func, mkdir,graph_collate_func2
 from configs import get_cfg_defaults
 from dataloader import DTIDataset, MultiDataLoader, DTIDataset2
 from torch.utils.data import DataLoader
-from trainer_p import Trainer
+from trainer import Trainer
 from domain_adaptator import Discriminator
 
 import argparse
