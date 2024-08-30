@@ -79,9 +79,14 @@ For the presented data splits in this project, all the teacher embeddings have b
 If you need to capture the teacher embedding for your dataset, run the code below:<br>
 
 ```
-python teacher_gae.py --train_path <path> --seed <int> --save_path <path> --epochs <int>
+python teacher_gae.py --train_path <path> --seed <int> --teacher_path <path> --epoch <int>
 ```
---save_path should be the path of a parquet file.<br>
+For example 
+
+```
+!python teacher_gae.py --train_path Data/sample_data/df_train200.csv --seed 12 --teacher_path Data/sample_data/test.parquet --epoch 10
+```
+--teacher_path should be the path of a parquet file.<br>
 ## prediction
 To load a trained model and make predictions, run predict.py and specify:
 
@@ -100,7 +105,11 @@ python predictions/predict.py --test_path Data/biosnap/inductive/seed12/target_t
 In the case that you need to set your hyperparameters, you can check the **config.py** and/or **GraphBAN_DA.yaml** (for inductive settings) and **GraphBAN.yaml** (for transductive settings).
 
 ## Demo
-We provide GraphBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note: A sample dataset with 200 interactions provided to examining the training procedure. Also, an example of retrieving the prediction scores captured by inductive analysis on the BioSNAP dataset is provided to test a trained model and reproduce the results reported in the paper. 
+We provide GraphBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note: A sample dataset with 200 interactions provided to examining the training procedure. Also, an example of retrieving the prediction scores captured by inductive analysis on the BioSNAP dataset is provided to test a trained model and reproduce the results reported in the paper. <br>
+The approximate time needed to install the packages on the Google Colab is 5 minutes.<br>
+The approximate time to clone this repository is 3 minutes.<br>
+The approximate time to run the training of the sample data with 50 epochs is 8 minutes.
+The approximate time to run the prediction with a trained model is 3 minutes.
 **Note: To run the Demo on Google Colab it is necessary to use the GPU-enabled version of Colab.**
 
 ## Other Folders
