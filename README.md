@@ -84,7 +84,7 @@ python teacher_gae.py --train_path <path> --seed <int> --teacher_path <path> --e
 For example 
 
 ```
-!python teacher_gae.py --train_path Data/sample_data/df_train200.csv --seed 12 --teacher_path Data/sample_data/test.parquet --epoch 10
+python teacher_gae.py --train_path Data/sample_data/df_train200.csv --seed 12 --teacher_path Data/sample_data/test.parquet --epoch 10
 ```
 --teacher_path should be the path of a parquet file.<br>
 ## prediction
