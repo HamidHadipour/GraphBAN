@@ -19,6 +19,8 @@ The source code developed in Python 3.8 using PyTorch 1.7.1. The required python
 
 ```
 torch>=1.7.1
+torch-geometric = 2.5.3
+torchmetrics = 1.4.1
 dgl>=0.7.1
 dgllife>=0.2.8
 numpy>=1.20.2
