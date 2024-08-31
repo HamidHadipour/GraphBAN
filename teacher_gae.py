@@ -186,12 +186,11 @@ def run_model(output_file_path, data_file_path):
   with torch.no_grad():
     model.encoder2(data.x_dict, data.edge_index_dict)
   optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-
   for epoch in range(0, args.epoch):
-
     loss = train(model, optimizer, data)
-    train_rmse, emb, ed = test_auroc(model, data)
-    print(train_rmse)
+    train_auroc, emb, ed = test_auroc(model, data)
+    print(f"Epoch: {epoch}, AUROC: {train_auroc:.4f}")
+
 
 
 #save link embeddings in a parquet file
