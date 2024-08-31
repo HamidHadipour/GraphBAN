@@ -108,8 +108,8 @@ In the case that you need to set your hyperparameters, you can check the **confi
 We provide GraphBAN running demo through a cloud Jupyter notebook on [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/183LGl-eJD-ZUw7lqoKlRdw6rw4Sw73W1?usp=sharing). Note: A sample dataset with 200 interactions provided to examining the training procedure. Also, an example of retrieving the prediction scores captured by inductive analysis on the BioSNAP dataset is provided to test a trained model and reproduce the results reported in the paper. <br>
 The approximate time needed to install the packages on the Google Colab is 5 minutes.<br>
 The approximate time to clone this repository is 3 minutes.<br>
-The approximate time to run the training of the sample data with 50 epochs is 8 minutes.
-The approximate time to run the prediction with a trained model is 3 minutes.
+The approximate time to run the training of the sample data with 50 epochs is 8 minutes.<br>
+The approximate time to run the prediction with a trained model is 3 minutes.<br>
 **Note: To run the Demo on Google Colab it is necessary to use the GPU-enabled version of Colab.**
 
 ## Other Folders
