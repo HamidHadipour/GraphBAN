@@ -111,7 +111,7 @@ class Trainer(object):
         
 
         
-        test_prettytable_file = os.path.join(self.output_dir, "test_markdowntable.txt")
+        test_prettytable_file = os.path.join(self.output_dir, "test_markdowntable_of_prediction_with_trained_model.txt")
 
 
         with open(test_prettytable_file, 'w') as fp:
