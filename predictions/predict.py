@@ -11,7 +11,6 @@ from tqdm import tqdm
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer, RobertaModel
 import esm
-
 from models import GraphBAN
 from utils import set_seed, graph_collate_func, mkdir
 from dataloader import DTIDataset, MultiDataLoader, DTIDataset2
@@ -102,4 +101,6 @@ result, cm1, pred = trainer.train()
 # Save results
 df_test['pred'] = pred
 df_test.to_csv('result/' + args.save_dir, index=False)
-print("The prediction scores and probabilities saved in result/" + args.save_dir)
+
+print("\nThe prediction probabilities saved in result/" + args.save_dir + '\n')
+print("The prediction scores saved in result/"+"test_markdowntable_of_prediction_with_trained_model.txt")
