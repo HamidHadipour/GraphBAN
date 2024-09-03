@@ -1,26 +1,29 @@
-import argparse
-import copy
-import math
-import numpy as np
-import os
-import pandas as pd
-import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import DataLoader
-from torch.nn.utils.weight_norm import weight_norm
-from tqdm import tqdm
-from rdkit.Chem import AllChem
-from transformers import AutoTokenizer, RobertaModel
+import argparse
+import torch
 import esm
-from dgllife.model.gnn import GCN
+import pandas as pd
+import numpy as np
+from torch.utils.data import DataLoader
+import torch.nn.functional as F
 
+from tqdm.auto import tqdm
 from models import GraphBAN
-from utils import set_seed, graph_collate_func, mkdir
+from time import time
+from utils import set_seed, graph_collate_func, mkdir,graph_collate_func2
 from configs import get_cfg_defaults
-from dataloader import DTIDataset, MultiDataLoader, DTIDataset2
+from dataloader import DTIDataset, MultiDataLoader,DTIDataset2
 from trainer import Trainer
 from domain_adaptator import Discriminator
+import torch
+import argparse
+import warnings, os
+import pandas as pd
+import copy
+from rdkit.Chem import AllChem
+import math
+from dgllife.model.gnn import GCN
+from torch.nn.utils.weight_norm import weight_norm
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description="Load train, val, test datasets and additional parameters.")
@@ -52,6 +55,8 @@ print("Mode: ", args.mode)
 df_test['Protein'] = df_test['Protein'].apply(lambda x: x[:1022] if len(x) > 1022 else x)
 df_train['Protein'] = df_train['Protein'].apply(lambda x: x[:1022] if len(x) > 1022 else x)
 df_val['Protein'] = df_val['Protein'].apply(lambda x: x[:1022] if len(x) > 1022 else x)
+
+
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -122,7 +127,10 @@ print('test esm is done!\n')
 
 
 print('ESM feature extraction: pass')
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, RobertaModel
+#from transformers import TrainingArguments, Trainer, IntervalStrategy
 
+# Setup
 # Load a pretrained transformer model and tokenizer
 #device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model_name = "DeepChem/ChemBERTa-77M-MTR"
@@ -173,13 +181,16 @@ df_test = pd.merge(df_test, df_testu[['SMILES', 'fcfp']], on='SMILES', how='left
 print('chemBERTa feature extraction: pass\n')
 
 
-
-# If you want to change the settings such as number of epochs for teh GraphBAN`s main model change it through GraphBAN_Demo.yaml.
+# If you want to change the settings such as number of epochs for teh GraphBANs main model change it through GraphBAN_Demo.yaml.
 # If you want to run the model for transductive analysis, use GraphBAN_None_DA.yaml
 if args.mode == 'inductive':
     cfg_path = "GraphBAN_DA.yaml"
 else:
     cfg_path = "GraphBAN.yaml"
+
+
+
+
 
 cfg = get_cfg_defaults()
 cfg.merge_from_file(cfg_path)
@@ -252,6 +263,11 @@ else:
                          discriminator=domain_dmm,
                          experiment=None, **cfg)
 
-result = trainer.train()
-print('Done')
 
+
+#seed18 inductive kiba
+#trainer = Trainer(modelG, opt, device, multi_generator, val_generator, test_generator, opt_da=opt_da,
+ #                         discriminator=domain_dmm,
+  #                        experiment=None, **cfg)
+result = trainer.train()
+print('pass')
