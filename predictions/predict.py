@@ -7,10 +7,45 @@ Original file is located at
     https://colab.research.google.com/drive/134l4flbonv8HlAjNBGWSngqAbdh_l2Ws
 """
 
-import pandas as pd
-import torch
-import torch.nn as nn
 
+import torch.nn as nn
+from models import GraphBAN
+from utils import set_seed, graph_collate_func, mkdir,graph_collate_func2
+
+from configs import get_cfg_defaults
+
+from dataloader import DTIDataset, MultiDataLoader,DTIDataset2
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, RobertaModel
+from torch.utils.data import DataLoader
+from domain_adaptator import Discriminator
+import torch
+import argparse
+import warnings, os
+from models import GraphBAN
+from time import time
+from utils import set_seed, graph_collate_func, mkdir,graph_collate_func2
+from configs import get_cfg_defaults
+from dataloader import DTIDataset, MultiDataLoader, DTIDataset2
+from torch.utils.data import DataLoader
+from trainer_pred import Trainer
+from domain_adaptator import Discriminator
+
+import argparse
+import warnings, os
+
+import copy
+import os
+import numpy as np
+from tqdm import tqdm
+from rdkit.Chem import AllChem
+import torch.nn as nn
+import torch.nn.functional as F
+import torch
+import math
+from dgllife.model.gnn import GCN
+import pandas as pd
+from torch.nn.utils.weight_norm import weight_norm
+import esm
 import argparse
 
 # Set up argument parser
@@ -26,10 +61,7 @@ df_test['Protein'] = df_test['Protein'].apply(lambda x: x[:1022] if len(x) > 102
 print('shape of your dataset\n')
 print(df_test.shape)
 
-import torch
-import esm
-import pandas as pd
-import numpy as np
+
 print("Downloading the ESM model...\n")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 esm_model, alphabet = esm.pretrained.esm1b_t33_650M_UR50S()
@@ -88,18 +120,6 @@ df_test = pd.merge(df_test, x, on='Protein', how='left')
 
 
 print('ESM features extract: pass')
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, RobertaModel
-#from transformers import TrainingArguments, Trainer, IntervalStrategy
-
-import pandas as pd
-import numpy as np
-
-import torch
-from torch.utils.data import DataLoader
-from torch import nn
-import torch.nn.functional as F
-
-from tqdm.auto import tqdm
 
 # Setup
 # Load a pretrained transformer model and tokenizer
@@ -139,51 +159,6 @@ df_testu['fcfp'] = emblist_test
 # Merge DataFrames on 'SMILES' column
 df_test = pd.merge(df_test, df_testu[['SMILES', 'fcfp']], on='SMILES', how='left')
 print('chemBERT features extract: pass\n')
-
-from models import GraphBAN
-
-from time import time
-from utils import set_seed, graph_collate_func, mkdir,graph_collate_func2
-
-from configs import get_cfg_defaults
-
-from dataloader import DTIDataset, MultiDataLoader,DTIDataset2
-
-from torch.utils.data import DataLoader
-from trainer import Trainer
-from domain_adaptator import Discriminator
-import torch
-import argparse
-import warnings, os
-import pandas as pd
-
-from models import GraphBAN
-from time import time
-from utils import set_seed, graph_collate_func, mkdir,graph_collate_func2
-from configs import get_cfg_defaults
-from dataloader import DTIDataset, MultiDataLoader, DTIDataset2
-from torch.utils.data import DataLoader
-from trainer import Trainer
-from domain_adaptator import Discriminator
-
-import argparse
-import warnings, os
-
-import copy
-import os
-import numpy as np
-from tqdm import tqdm
-from rdkit.Chem import AllChem
-import torch.nn as nn
-import torch.nn.functional as F
-import torch
-import math
-from dgllife.model.gnn import GCN
-import pandas as pd
-import torch
-import torch.nn as nn
-from torch.nn.utils.weight_norm import weight_norm
-
 
 
 cfg_path = "GraphBAN_DA.yaml"
