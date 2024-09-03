@@ -6,7 +6,6 @@ import pandas as pd
 import numpy as np
 from torch.utils.data import DataLoader
 import torch.nn.functional as F
-
 from tqdm.auto import tqdm
 from models import GraphBAN
 from time import time
@@ -15,7 +14,6 @@ from configs import get_cfg_defaults
 from dataloader import DTIDataset, MultiDataLoader,DTIDataset2
 from trainer import Trainer
 from domain_adaptator import Discriminator
-import torch
 import argparse
 import warnings, os
 import pandas as pd
@@ -189,9 +187,6 @@ else:
     cfg_path = "GraphBAN.yaml"
 
 
-
-
-
 cfg = get_cfg_defaults()
 cfg.merge_from_file(cfg_path)
 cfg.freeze()
@@ -265,9 +260,5 @@ else:
 
 
 
-#seed18 inductive kiba
-#trainer = Trainer(modelG, opt, device, multi_generator, val_generator, test_generator, opt_da=opt_da,
- #                         discriminator=domain_dmm,
-  #                        experiment=None, **cfg)
 result = trainer.train()
 print('pass')
