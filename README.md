@@ -29,6 +29,7 @@ pandas>=1.2.4
 prettytable>=2.2.1
 rdkit~=2021.03.2
 yacs~=0.1.8
+transformers = 4.42.0
 ```
 ## Installation Guide
 Clone this Github repo and set up a new conda environment. It normally takes about 10 minutes to install on a normal desktop computer.
@@ -44,6 +45,7 @@ $ conda install -c conda-forge rdkit==2022.09.5
 $ pip install dgllife==0.2.8
 $ pip install -U scikit-learn
 $ pip install yacs
+$ pip install transformers
 
 # clone the source code of GraphBAN
 $ git clone https://github.com/HamidHadipour/GraphBAN
