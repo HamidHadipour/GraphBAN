@@ -42,7 +42,7 @@ _C.SOLVER.SEED = 2064
 
 # RESULT
 _C.RESULT = CN()
-_C.RESULT.OUTPUT_DIR = "./result"
+_C.RESULT.OUTPUT_DIR = "./inductive_mode/result"
 _C.RESULT.SAVE_MODEL = True
 
 # Domain adaptation
