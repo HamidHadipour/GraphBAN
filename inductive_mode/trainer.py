@@ -7,7 +7,7 @@ from sklearn.metrics import roc_auc_score, average_precision_score, roc_curve, c
 from models import binary_cross_entropy, cross_entropy_logits, entropy_logits, RandomLayer
 from prettytable import PrettyTable
 from domain_adaptator import ReverseLayerF
-from tqdm import tqdmimport torch
+from tqdm import tqdm
 import torch.nn as nn
 import copy
 import os
