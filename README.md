@@ -13,7 +13,7 @@ In this study, we introduce GraphBAN, a novel out-of-distribution-based CPI pred
 Our experiments, conducted using five benchmark datasets (BioSNAP, BindingDB, KIBA, C.elegans, PDBbind 2016) under both transductive and inductive settings, demonstrate that GraphBAN outperforms six state-of-the-art baseline models, achieving the highest overall performance.
 
 ## Framework
-![GraphBAN](image/new_graphban2.png)
+![GraphBAN](image/graphban_mainpart.png)
 
 
 
