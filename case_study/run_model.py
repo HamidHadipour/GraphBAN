@@ -183,9 +183,9 @@ print('chemBERTa feature extraction: pass\n')
 # If you want to change the settings such as number of epochs for teh GraphBANs main model change it through GraphBAN_Demo.yaml.
 # If you want to run the model for transductive analysis, use GraphBAN_None_DA.yaml
 if args.mode == 'inductive':
-    cfg_path = "GraphBAN_DA.yaml"
+    cfg_path = "case_study/GraphBAN_DA.yaml"
 else:
-    cfg_path = "GraphBAN.yaml"
+    cfg_path = "case_study/GraphBAN.yaml"
 
 
 cfg = get_cfg_defaults()

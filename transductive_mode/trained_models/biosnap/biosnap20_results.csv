@@ -1,0 +1,2 @@
+AUROC,AUPRC,F1 Score
+tensor(0.9972),tensor(0.9961),tensor(0.9833)

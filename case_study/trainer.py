@@ -234,8 +234,8 @@ class Trainer(object):
             self.step += 1
             v_d, sm, v_p,esm, labels, teacher = batch_s[0].to(self.device), batch_s[1].to(self.device), batch_s[2].to(
                 self.device),batch_s[3].to(self.device), batch_s[4].float().to(self.device), batch_s[5].to(self.device)
-            v_d_t, smt, v_p_t,esmt, labelst = batch_t[0].to(self.device), batch_t[1].to(self.device), batch_t[2].to(
-                self.device), batch_t[3].to(self.device) ,batch_t[4].float().to(self.device)
+            v_d_t, smt, v_p_t,esmt = batch_t[0].to(self.device), batch_t[1].to(self.device), batch_t[2].to(
+                self.device), batch_t[3].to(self.device) #,batch_t[4].float().to(self.device)
             
             teacher = torch.tensor(teacher, dtype=torch.float32)
             sm = torch.tensor(sm ,dtype=torch.float32)
@@ -367,12 +367,12 @@ class Trainer(object):
         num_batches = len(data_loader)
         with torch.no_grad():
             self.model.eval()
-            for i, (v_d, sm, v_p,esm, labels) in enumerate(data_loader):
+            for i, (v_d, sm, v_p,esm) in enumerate(data_loader):
                 sm = torch.tensor(sm ,dtype=torch.float32)
                 sm = torch.reshape(sm,(sm.shape[0],1,384))
                 esm = torch.tensor(esm ,dtype=torch.float32)
                 esm = torch.reshape(esm,(sm.shape[0],1,1280))
-                v_d, sm,  v_p, esm, labels = v_d.to(self.device),sm.to(self.device), v_p.to(self.device), esm.to(self.device), labels.float().to(self.device)
+                v_d, sm,  v_p, esm = v_d.to(self.device),sm.to(self.device), v_p.to(self.device), esm.to(self.device)
                 device = self.device
                 
               
@@ -390,18 +390,8 @@ class Trainer(object):
                     #v_p_list_test.append(v_p)
                     #test_drug_features.append(v_d)
                     #test_protein_features.append(v_p)
-                if self.n_class == 1:
-                    #weights = torch.tensor([0.3 if label == 1 else 0.7 for label in labels])
-                    #weights = weights.to(self.device)
-                    n, loss = binary_cross_entropy(score, labels)
-                else:
-                    n, loss = cross_entropy_logits(score, labels)
-                test_loss += loss.item()
-                #y_label = y_label + labels.to("cpu").tolist()
-                #y_pred = y_pred + n.to("cpu").tolist()
-        #auroc = roc_auc_score(y_label, y_pred)
-        #auprc = average_precision_score(y_label, y_pred)
-        test_loss = test_loss / num_batches
+    
+        #test_loss = test_loss / num_batches
 
         if dataloader == "test":
             #fpr, tpr, thresholds = roc_curve(y_label, y_pred)
@@ -418,6 +408,6 @@ class Trainer(object):
               #  self.experiment.log_curve("test_roc curve", fpr, tpr)
                # self.experiment.log_curve("test_pr curve", recall, prec)
            # precision1 = precision_score(y_label, y_pred_s)
-            return test_loss
+            return True#test_loss
         else:
-            return test_loss
+            return True#test_loss
