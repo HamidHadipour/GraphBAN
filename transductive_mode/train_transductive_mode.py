@@ -25,6 +25,8 @@ parser.add_argument("--seed", type=int, required=True, help="Seed number for ran
 parser.add_argument("--save_model", type=str, required=True, help="Path to the saved model.")
 parser.add_argument("--metric_path", type=str, required=True, help="Path to save the predicted metrics.")
 parser.add_argument("--prediction_path", type=str, required=True, help="Path to save the prediction probabilities.")
+parser.add_argument("--h_dimension", type=int, required=True, help="hidden dimension.")
+parser.add_argument("--epochs", type=int, required=True, help="number of training epochs.")
 
 args = parser.parse_args()
 
@@ -291,7 +293,7 @@ def run_model(data_file_path_train, mol_feature_train, prot_feature_train,data_f
 
 
     # Initialize and prepare the model, data, etc.
-  hidden_channels= 256
+  hidden_channels= args.h_dimension
   model = Model(data, hidden_channels=hidden_channels)
   #model.load_state_dict(torch.load(args.trained_model))
   with torch.no_grad():
@@ -303,7 +305,7 @@ def run_model(data_file_path_train, mol_feature_train, prot_feature_train,data_f
   #print(train_rmse, auprc,f1 )
 
   best_val_loss = float(0)
-  for epoch in range(1, 500):
+  for epoch in range(1, args.epochs):
 
     loss = train(model, optimizer, data)
     model.eval()
