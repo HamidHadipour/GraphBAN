@@ -16,7 +16,7 @@ python case_study/run_model.py --train_path case_study/biosnap_train_data/source
 -The result_path will save the models for 50 epochs in your path directory.<br>
 
 **Note**<br>
-to get the teacher embedding, you should go to the /inductive_mode directory and run the teacher_gae.py file with the below arguments.<br>
+To get the teacher embedding, you should go to the /inductive_mode directory and run the teacher_gae.py file with the arguments below.<br>
 
 ```
 python inductive_mode/teacher_gae.py --train_path <path> --seed <int> --teacher_path <path> --epoch <int>
@@ -34,6 +34,7 @@ python predict.py --test_path <path> --folder_path <path> --save_dir <path>
 -The folder path is the path to the folder that has the trained models.<br>
 **Note**<br>
 By default, the predict.py code takes the models trained in 30-50 epochs, not for all 50 epochs. The reason is that experimentally, the model gets stable in prediction after epoch 30. You can change these settings depending on your custom situation.<br>
+The details of hyperparameters can be changed in GraphBAN_DA.yaml and configs.py files. Also, the number of models to be considered for prediction can be change in line 115 of predict.py file.<br>
 
 **For example**<br>
 ```
