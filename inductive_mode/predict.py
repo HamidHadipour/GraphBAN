@@ -83,6 +83,7 @@ df_test = pd.merge(df_test, df_test_unique[['SMILES', 'fcfp']], on='SMILES', how
 # Configurations and model setup
 cfg = get_cfg_defaults()
 cfg.merge_from_file("inductive_mode/GraphBAN_DA.yaml")
+mkdir(cfg.RESULT.OUTPUT_DIR)
 cfg.freeze()
 
 # Set up the DataLoader
@@ -100,7 +101,7 @@ result, cm1, pred = trainer.train()
 
 # Save results
 df_test['pred'] = pred
-df_test.to_csv('result/' + args.save_dir, index=False)
+df_test.to_csv('inductive_mode/result/' + args.save_dir, index=False)
 
 print("\nThe prediction probabilities saved in result/" + args.save_dir + '\n')
-print("The prediction scores saved in result/"+"test_markdowntable_of_prediction_with_trained_model.txt")
+print("The prediction scores saved in inductive_mode/result/"+"test_markdowntable_of_prediction_with_trained_model.txt")
