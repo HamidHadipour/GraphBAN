@@ -103,5 +103,5 @@ result, cm1, pred = trainer.train()
 df_test['pred'] = pred
 df_test.to_csv('inductive_mode/result/' + args.save_dir, index=False)
 
-print("\nThe prediction probabilities saved in result/" + args.save_dir + '\n')
+print("\nThe prediction probabilities saved in inductive_mode/result/" + args.save_dir + '\n')
 print("The prediction scores saved in inductive_mode/result/"+"test_markdowntable_of_prediction_with_trained_model.txt")
