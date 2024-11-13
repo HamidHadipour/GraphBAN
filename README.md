@@ -63,19 +63,18 @@ If you need to bring your dataset and need to split it into transductive and ind
 python preprocessing/clustering/inductive_split.py --path_your_dataset --train <path> --val <path> --test <path> --seed <int>
 python preprocessing/clustering/transductive_split.py --path_your_dataset --train <path> --val <path> --test <path> --seed <int>
 ```
-## Training
+## Inductive Training
 To train the GraphBAN, run:
 ```
 python run_model.py --train_path <path> --val_path <path> --test_path <path> --seed <int> --mode <[inductive, transductive]> --teacher_path <path>
 ```
 **For example**
 ```
-python run_model.py --train_path Data/sample_data/df_train200.csv --val_path Data/sample_data/df_val.csv --test_path Data/sample_data/df_test.csv --mode inductive --seed 12 --teacher_path Data/sample_data/df_train200_teaqcher_embeddings.parquet
+python run_model.py --train_path Data/sample_data/df_train200.csv --val_path Data/sample_data/df_val.csv --test_path Data/sample_data/df_test.csv --seed 12 --teacher_path Data/sample_data/df_train200_teaqcher_embeddings.parquet
 ```
 The result will be saved in a directory named **result/** that includes the trained model.pth and the prediction scores in a CSV file.
 
 The first three arguments are the paths of your data splits.<br>
-The --mode argument is to denote whether your analysis is transductive or inductive.<br>
 The --teacher-path is the path to the parquet file that contains the embedding of your trainset that is captured by the Teacher block of the model.<br>
 For the presented data splits in this project, all the teacher embeddings have been provided already.<br>
 If you need to capture the teacher embedding for your dataset, run the code below:<br>
@@ -89,7 +88,7 @@ For example
 python teacher_gae.py --train_path Data/sample_data/df_train200.csv --seed 12 --teacher_path Data/sample_data/test.parquet --epoch 10
 ```
 --teacher_path should be the path of a parquet file.<br>
-## prediction
+## Inductive prediction
 To load a trained model and make predictions, run predict.py and specify:
 
 --test_path <path> Path to the data to predict on.<br>
@@ -103,6 +102,23 @@ python predictions/predict.py --test_path <path> --trained_model <path> --save_d
 python predictions/predict.py --test_path Data/biosnap/inductive/seed12/target_test_biosnap12.csv --trained_model predictions/trained_models/biosnap/inductive/seed12/best_model_epoch_45.pth --save_dir biosnap12_predictions.csv
 
 ```
+## Transductive Training
+to train the model in transductive mode, please run the code below. In transductive mode we do not have feature fusion, and student blocks and just use the LLMs to extract compound and protein features plus a GAE to to train on the bi-partite network of CPIs.<br>
+```
+python transductive_mode/train_transductive_mode.py --train_path <path> --val_path <path> --test_path <path> --seed <int> --save_model <path> --metric_path <path> --prediction_path <path> --h_dimension <int> --epochs <int>
+```
+It receives the paths for train, validation, and test sets.<br>
+Also, a seed set for randomization.<br>
+The save mode is the path to save the torch model.pth file.<br>
+The metric_path is the address to be set to save the metrics in a .csv file.<br>
+The prediction path is to save the predicted probabilities to a .csv file.<br>
+The dimension is to set the hidden dimension of the embedding that will be set for each of the compound and protein nodes.<br>
+The epoch is to set the number of epochs needed.<br>
+**For example**,
+```
+python transductive_mode/train_transductive_mode.py --train_path Data/kiba/transductive/seed12/train_kiba12.csv --val_path Data/kiba/transductive/seed12/val_kiba12.csv --test_path Data/kiba/transductive/seed12/test_kiba12.csv --seed 12 --save_model Data/kiba12_model.pth --metric_path Data/kiba12_metric.csv --prediction_path Data/kiba12_preds.csv --h_dimension 256 --epochs 10
+```
+
 ## Hyperparameters
 In the case that you need to set your hyperparameters, you can check the **config.py** and/or **GraphBAN_DA.yaml** (for inductive settings) and **GraphBAN.yaml** (for transductive settings).
 
@@ -119,11 +135,7 @@ The approximate time to run the prediction with a trained model is 3 minutes.<br
 **case_study** is the directory that saved the data and trained models provided in our case study section.<br>
 
 ## Acknowledgements
-This implementation is inspired and partially based on earlier works [1].
+This implementation is inspired and partially based on earlier works (DrugBAN).
 
 
-
-## References
-
-    [1] Bai P, Miljković F, John B, Lu H. Interpretable bilinear attention network with domain adaptation improves drug–target prediction. Nat Mach Intell. 2023 Feb 1;5(2):126–36. 
 
