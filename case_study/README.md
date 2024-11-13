@@ -6,15 +6,27 @@
 -The three trainsets used to train the model are in the three directories based on the names biosnap_train_data, bindingdb_train_data, and kiba_train_data.<br>
 -The folder /predictions includes the probabilities of around 250k interactions captured by GraphBAN based on each trainset.<br>
 
-To run the model with eah of the trainsets you can run one of the following commands based on your need.
+**To run the model with each of the trainsets you can run one of the following commands based on your need.**
 ```
-python biosnap_run.py
-```
-
-```
-python bindingdb_run.py
+python BioSNAP_run.py
 ```
 
 ```
-python kiba_run.py
+python BindingDB_run.py
+```
+
+```
+python KIBA_run.py
 ````
+
+**To get the predicted values based on each trained model with one of the three datasets you can run one of the prediction codes accordingly**
+```
+python BioSNAP_predict.py
+```
+```
+python BindingDB_predict.py
+```
+```
+python KIBA_predict.py
+```
+
