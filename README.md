@@ -118,7 +118,15 @@ The epoch is to set the number of epochs needed.<br>
 ```
 python transductive_mode/train_transductive_mode.py --train_path Data/kiba/transductive/seed12/train_kiba12.csv --val_path Data/kiba/transductive/seed12/val_kiba12.csv --test_path Data/kiba/transductive/seed12/test_kiba12.csv --seed 12 --save_model Data/kiba12_model.pth --metric_path Data/kiba12_metric.csv --prediction_path Data/kiba12_preds.csv --h_dimension 256 --epochs 10
 ```
-
+## Transductive prediction
+To use the trained transductive models you can run the codes as below,<br>
+```
+python transductive_mode/predict_transductive.py --test_path <path> --seed <int> --trained_model <path> --metric_path <path> --pred_probs_path <path>
+```
+**For example**
+```
+python transductive_mode/predict_transductive.py --test_path Data/kiba/transductive/seed12/test_kiba12.csv --seed 12 --trained_model transductive_mode/trained_models/kiba/kiba_trans_12.pth  --metric_path transductive_mode/kiba12_test_pred_metric.csv --pred_probs_path transductive_mode/kiba12_test_pred.csv
+```
 ## Hyperparameters
 In the case that you need to set your hyperparameters, you can check the **config.py** and/or **GraphBAN_DA.yaml** (for inductive settings) and **GraphBAN.yaml** (for transductive settings).
 
