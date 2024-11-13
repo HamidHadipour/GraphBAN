@@ -3,10 +3,10 @@ from tqdm import tqdm
 
 # Base command template
 command_template = (
-    "python run_model.py --train_path kiba_train_data/source_train_kiba12.csv "
-    "--val_path zinc_data2/split_zinc_{index}.csv --test_path zinc_data2/split_zinc_{index}.csv "
-    "--seed {index} --mode inductive --teacher_path kiba_train_data/kiba12_inductive_teacher_emb.parquet "
-    "--result_path result_kiba12_zinc2{index}/"
+    "python case_study/run_model.py --train_path case_study/kiba_train_data/source_train_kiba12.csv "
+    "--val_path case_study/zinc_data/split_zinc_{index}.csv --test_path case_study/zinc_data/split_zinc_{index}.csv "
+    "--seed {index} --mode inductive --teacher_path case_study/kiba_train_data/kiba12_inductive_teacher_emb.parquet "
+    "--result_path case_study/result_kiba12_zinc2{index}/"
 )
 
 # Loop through indexes 1 to 25 with tqdm progress bar

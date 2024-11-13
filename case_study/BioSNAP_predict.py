@@ -4,8 +4,8 @@ from tqdm import tqdm
 
 # Base command template
 command_template = (
-    "python predict.py --test_path zinc_data2/split_zinc_{index}.csv "
-    "--folder_path result_biosnap12_zinc2{index} --save_dir test_zinc_new{index}_preds.csv"
+    "python case_study/predict.py --test_path case_study/zinc_data/split_zinc_{index}.csv "
+    "--folder_path case_study/result_biosnap12_zinc2{index} --save_dir case_study/test_zinc_new{index}_preds.csv"
   
 )
 
