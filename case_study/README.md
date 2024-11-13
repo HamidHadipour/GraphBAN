@@ -21,15 +21,25 @@ to get the teacher embedding, you should go to the /inductive_mode directory and
 ```
 python inductive_mode/teacher_gae.py --train_path <path> --seed <int> --teacher_path <path> --epoch <int>
 ```
-The teacher_path is the path you want to save the teacher embedding in .parquet format.
-**Example**<br>
+The teacher_path is the path you want to save the teacher embedding in .parquet format.<br>
+**For example**<br>
 ```
 python inductive_mode/teacher_gae.py --train_path Data/sample_data/df_train200.csv --seed 12 --teacher_path Data/sample_data/test.parquet --epoch 10
 ```
 **Prediction**<br>
 To use the trained models to do the prediction you can run the code below.<br>
 ```
+python predict.py --test_path <path> --folder_path <path> --save_dir <path>
+```
+-The folder path is the path to the folder that has the trained models.<br>
+**Note**<br>
+By default, the predict.py code takes the models trained in 30-50 epochs, not for all 50 epochs. The reason is that experimentally, the model gets stable in prediction after epoch 30. You can change these settings depending on your custom situation.<br>
 
+**For example**<br>
+```
+python case_study/predict.py --test_path case_study/zinc_data/split_zinc_1.csv --folder_path case_study/result_biosnap12_zinc1 --save_dir case_study/test_zinc_new1_preds.csv
+```
+## To rerun the codes that produced the results that are provided in the paper please follow the rest.
 
 -The whole dataset of ZINC-Pin1 is located in the root directory ZINC-Pin1.csv.<br>
 -The 25 splits of the training dataset are in /zinc_data directory.<br>
@@ -49,7 +59,8 @@ python BindingDB_run.py
 python KIBA_run.py
 ````
 
-**To get the predicted values based on each trained model with one of the three datasets you can run one of the prediction codes accordingly**
+**To get the predicted values based on each trained model with one of the three datasets, you can run one of the prediction codes accordingly**<br>
+**Before running, you need to download the trained models from the links provided above.**
 ```
 python BioSNAP_predict.py
 ```
