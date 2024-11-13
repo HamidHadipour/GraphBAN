@@ -245,7 +245,10 @@ def run_model(data_file_path_test, mol_feature_test, prot_feature_test ):
   # Create a DataFrame with the metrics
 
   train_rmse, auprc, f1, df_pred = test_auroc(model, data_test, test_df)
-  print(train_rmse, auprc,f1 )  
+  print(f"AUROC : {train_rmse:.3f}")
+  print(f"AUPRC: {auprc:.3f}")
+  print(f"F1 Score: {f1:.3f}")
+  #print(train_rmse, auprc,f1 )  
   metrics_df = pd.DataFrame({
   'AUROC': [train_rmse],
   'AUPRC': [auprc],
