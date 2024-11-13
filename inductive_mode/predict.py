@@ -82,7 +82,7 @@ df_test = pd.merge(df_test, df_test_unique[['SMILES', 'fcfp']], on='SMILES', how
 
 # Configurations and model setup
 cfg = get_cfg_defaults()
-cfg.merge_from_file("GraphBAN_DA.yaml")
+cfg.merge_from_file("inductive_mode/GraphBAN_DA.yaml")
 cfg.freeze()
 
 # Set up the DataLoader
