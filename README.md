@@ -51,7 +51,80 @@ $ pip install transformers
 $ git clone https://github.com/HamidHadipour/GraphBAN
 $ cd GraphBAN
 ```
+##Repository Structure
+```
+.
+├── Ablation_study
+│   ├── ablation_bindingdb
+│   ├── ablation_biosnapDS
+│   └── __pycache__
+├── case_study
+│   ├── ban.py
+│   ├── BindingDB_predict.py
+│   ├── BindingDB_run.py
+│   ├── bindingdb_train_data
+│   ├── BioSNAP_predict.py
+│   ├── BioSNAP_run.py
+│   ├── biosnap_train_data
+│   ├── configs.py
+│   ├── dataloader.py
+│   ├── domain_adaptator.py
+│   ├── GraphBAN_DA.yaml
+│   ├── KIBA_predict.py
+│   ├── KIBA_run.py
+│   ├── kiba_train_data
+│   ├── models.py
+│   ├── predictions
+│   ├── predict.py
+│   ├── __pycache__
+│   ├── README.md
+│   ├── result_biosnap12_zinc21
+│   ├── run_model.py
+│   ├── trainer_pred.py
+│   ├── trainer.py
+│   ├── utils.py
+│   ├── zinc_data
+│   └── ZINC-Pin1.csv
+├── Data
+│   ├── bindingdb
+│   ├── biosnap
+│   ├── c.elegans
+│   ├── kiba
+│   ├── pdb
+│   └── sample_data
+├── GraphBAN_DEMO.ipynb
+├── image
+│   ├── new_graphban2.png
+│   └── test
+├── inductive_mode
+│   ├── ban.py
+│   ├── configs.py
+│   ├── dataloader.py
+│   ├── domain_adaptator.py
+│   ├── GraphBAN_DA.yaml
+│   ├── GraphBAN.yaml
+│   ├── models.py
+│   ├── predict.py
+│   ├── run_model.py
+│   ├── teacher_gae.py
+│   ├── trained_models
+│   ├── trainer_pred.py
+│   ├── trainer.py
+│   └── utils.py
+├── LICENSE
+├── preprocessing
+│   ├── clustering
+│   └── just_extractFeatures.py
+├── README.md
+├── repo_structure.txt
+└── transductive_mode
+    ├── predict_transductive.py
+    ├── trained_models
+    └── train_transductive_mode.py
 
+26 directories, 41 files
+
+```
 
 ## Data
 In order to train GraphBAN, you need to provide your data as a CSV file with a header row of 'SMILES', 'Protein', and 'Y' ordered.<br>
