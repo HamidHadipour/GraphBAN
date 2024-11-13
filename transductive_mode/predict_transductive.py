@@ -259,7 +259,7 @@ def run_model(data_file_path_test, mol_feature_test, prot_feature_test ):
 # Save the DataFrame to a CSV file
   metrics_df.to_csv(args.metric_path,index=False)
 
-  print("Metrics saved to metrics.csv")
+  print("Metrics saved to " + args.metric_path)
   
   return 'yes'
 import torch
