@@ -32,6 +32,7 @@ pandas>=1.2.4
 prettytable>=2.2.1
 rdkit~=2021.03.2
 yacs~=0.1.8
+pyarrow
 transformers = 4.42.0
 ```
 ## Installation Guide
@@ -49,6 +50,7 @@ $ pip install dgllife==0.2.8
 $ pip install -U scikit-learn
 $ pip install yacs
 $ pip install transformers
+$ pip install pyarrow
 
 # clone the source code of GraphBAN
 $ git clone https://github.com/HamidHadipour/GraphBAN
