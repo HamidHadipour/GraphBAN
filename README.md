@@ -1,4 +1,4 @@
-# GraphBAN: A Novel Inductive Graph-Based Approach for Enhanced Prediction of Compound-Protein Interactions
+# GraphBAN: An Inductive Graph-Based Approach for Enhanced Prediction of Compound-Protein Interactions
 
 <div align="left">
 
@@ -9,7 +9,8 @@
 
 
 ## Introduction
-In this study, we introduce GraphBAN, a novel out-of-distribution-based CPI prediction approach using graph knowledge distillation (KD). GraphBAN utilizes a KD module, which includes a graph analysis component (referred to as the "teacher"), and the deep bilinear attention network (BAN). This framework concatenates compound and protein features by considering their pairwise local interactions. Additionally, it incorporates domain adaptation modules to align the interaction representations across different distributions, thus improving generalization for unseen compounds and proteins (referred to as the "student"). GraphBAN operates on a bi-partite graph of CPIs, allowing it to make predictions for both transductive (e.g., test nodes are seen during training) and inductive (e.g., test nodes are not seen during training) links.
+This repository contains the PyTorch implementation of GraphBAN framework, as described in our Nature Communications paper (In Press) "GraphBAN: An Inductive Graph-Based Approach for Enhanced Prediction of Compound-Protein Interactions".
+In this study, we introduce an out-of-distribution-based CPI prediction approach using graph knowledge distillation (KD). GraphBAN utilizes a KD module, which includes a graph analysis component (referred to as the "teacher"), and the deep bilinear attention network (BAN). This framework concatenates compound and protein features by considering their pairwise local interactions. Additionally, it incorporates domain adaptation modules to align the interaction representations across different distributions, thus improving generalization for unseen compounds and proteins (referred to as the "student"). GraphBAN operates on a bi-partite graph of CPIs, allowing it to make predictions for both transductive (e.g., test nodes are seen during training) and inductive (e.g., test nodes are not seen during training) links.
 Our experiments, conducted using five benchmark datasets (BioSNAP, BindingDB, KIBA, C.elegans, PDBbind 2016) under both transductive and inductive settings, demonstrate that GraphBAN outperforms six state-of-the-art baseline models, achieving the highest overall performance.
 
 ## Framework
@@ -109,7 +110,7 @@ python predictions/predict.py --test_path Data/biosnap/inductive/seed12/target_t
 
 ```
 ## Transductive Training
-to train the model in transductive mode, please run the code below. In transductive mode we do not have feature fusion, and student blocks and just use the LLMs to extract compound and protein features plus a GAE to to train on the bi-partite network of CPIs.<br>
+to train the model in transductive mode, please run the code below. In transductive mode, we do not have feature fusion and student blocks and just use the LLMs to extract compound and protein features, plus a GAE to to train on the bi-partite network of CPIs.<br>
 ```
 python transductive_mode/train_transductive_mode.py --train_path <path> --val_path <path> --test_path <path> --seed <int> --save_model <path> --metric_path <path> --prediction_path <path> --h_dimension <int> --epochs <int>
 ```
@@ -125,7 +126,7 @@ The epoch is to set the number of epochs needed.<br>
 python transductive_mode/train_transductive_mode.py --train_path Data/kiba/transductive/seed12/train_kiba12.csv --val_path Data/kiba/transductive/seed12/val_kiba12.csv --test_path Data/kiba/transductive/seed12/test_kiba12.csv --seed 12 --save_model Data/kiba12_model.pth --metric_path Data/kiba12_metric.csv --prediction_path Data/kiba12_preds.csv --h_dimension 256 --epochs 10
 ```
 ## Transductive prediction
-To use the trained transductive models you can run the codes as below,<br>
+To use the trained transductive models, you can run the codes below,<br>
 ```
 python transductive_mode/predict_transductive.py --test_path <path> --seed <int> --trained_model <path> --metric_path <path> --pred_probs_path <path>
 ```
@@ -149,7 +150,20 @@ The approximate time to run the prediction with a trained model is 3 minutes.<br
 **case_study** is the directory that saved the data and trained models provided in our case study section.<br>
 
 ## Acknowledgements
-This implementation is inspired and partially based on earlier works (DrugBAN).
+This implementation is inspired and partially based on earlier works [DrugBAN](https://github.com/peizhenbai/DrugBAN).
+
+## Citation
+Please cite our [paper] if you find our work useful in your own research.
+```
+    @article{Hadipour2025graphban,
+      title   = {GraphBAN: An Inductive Graph-Based Approach for Enhanced Prediction of Compound-Protein Interactions},
+      author  = {Hamid Hadipour, Yan Yi Li, Yan Sun, Chutong Deng, Leann Lac, Rebecca Davis, Silvia T Cardona, Pingzhao Hu},
+      journal = {Nature Communications},
+      year    = {2025},
+      publisher={In Press},
+    }
+```
+
 
 
 
