@@ -14,7 +14,7 @@ In this study, we introduce an out-of-distribution-based CPI prediction approach
 Our experiments, conducted using five benchmark datasets (BioSNAP, BindingDB, KIBA, C.elegans, PDBbind 2016) under both transductive and inductive settings, demonstrate that GraphBAN outperforms six state-of-the-art baseline models, achieving the highest overall performance.
 
 ## Framework
-![GraphBAN](image/new_scale_main_arch.png)
+![GraphBAN](image/F1.png)
 
 
 
