@@ -160,7 +160,6 @@ Please cite our [paper] if you find our work useful in your own research.
       author  = {Hamid Hadipour, Yan Yi Li, Yan Sun, Chutong Deng, Leann Lac, Rebecca Davis, Silvia T Cardona, Pingzhao Hu},
       journal = {Nature Communications},
       year    = {2025},
-      publisher={In Press},
     }
 ```
 
