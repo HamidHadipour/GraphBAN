@@ -19,7 +19,7 @@ Our experiments, conducted using five benchmark datasets (BioSNAP, BindingDB, KI
 
 
 ## System Requirements
-The source code developed in Python 3.8 using PyTorch 1.7.1. The required python dependencies are given below. GraphBAN is supported for any standard computer and operating system (Windows/macOS/Linux) with enough RAM to run. There is no additional non-standard hardware requirements.
+The minimum required dependencies are given below. GraphBAN is supported for any standard computer and operating system (Windows/macOS/Linux) with enough RAM to run. There are no additional non-standard hardware requirements.
 
 ```
 torch
