@@ -22,40 +22,33 @@ Our experiments, conducted using five benchmark datasets (BioSNAP, BindingDB, KI
 The source code developed in Python 3.8 using PyTorch 1.7.1. The required python dependencies are given below. GraphBAN is supported for any standard computer and operating system (Windows/macOS/Linux) with enough RAM to run. There is no additional non-standard hardware requirements.
 
 ```
-torch>=1.7.1
-torch-geometric = 2.5.3
-torchmetrics = 1.4.1
-dgl>=0.7.1
-dgllife>=0.2.8
-numpy>=1.20.2
-scikit-learn>=0.24.2
-pandas>=1.2.4
-prettytable>=2.2.1
-rdkit~=2021.03.2
-yacs~=0.1.8
+torch
+torch-geometric
+torchmetrics
+dgl
+dgllife
+numpy
+scikit-learn
+pandas
+prettytable
+rdkit
+yacs
 pyarrow
-transformers = 4.42.0
+transformers
+fair-esm
 ```
 ## Installation Guide
 Clone this Github repo and set up a new conda environment. It normally takes about 10 minutes to install on a normal desktop computer.
 ```
+# clone the source code of GraphBAN
+$ git clone https://github.com/HamidHadipour/GraphBAN
+$ cd GraphBAN
 # create a new conda environment
 $ conda create --name graphban python=3.11
 $ conda activate graphban
 
 # install requried python dependencies
-$ conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=10.2 -c pytorch
-$ conda install -c dglteam dgl-cuda10.2==0.7.1
-$ conda install -c conda-forge rdkit==2022.09.5
-$ pip install dgllife==0.2.8
-$ pip install -U scikit-learn
-$ pip install yacs
-$ pip install transformers
-$ pip install pyarrow
-
-# clone the source code of GraphBAN
-$ git clone https://github.com/HamidHadipour/GraphBAN
-$ cd GraphBAN
+$ pip install -r requirements.txt
 ```
 ## The instructions provided further are to retrieve the results provided in GraphBAN's paper or for you to testify to the model's performance with your labelled datasets.
 ## If you have a real-world case to train and test the model, please follow the instructions provided in the/case_study directory. 
@@ -77,7 +70,7 @@ python run_model.py --train_path <path> --val_path <path> --test_path <path> --s
 ```
 **For example**
 ```
-python run_model.py --train_path Data/sample_data/df_train200.csv --val_path Data/sample_data/df_val.csv --test_path Data/sample_data/df_test.csv --seed 12 --teacher_path Data/sample_data/df_train200_teaqcher_embeddings.parquet
+python run_model.py --train_path Data/sample_data/df_train200.csv --val_path Data/sample_data/df_val.csv --test_path Data/sample_data/df_test.csv --seed 12 --mode inductive --teacher_path Data/sample_data/df_train200_teaqcher_embeddings.parquet
 ```
 The result will be saved in a directory named **result/** that includes the trained model.pth and the prediction scores in a CSV file.
 
