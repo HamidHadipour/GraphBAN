@@ -90,7 +90,7 @@ df_test = pd.merge(df_test, df_test_unique[['SMILES', 'fcfp']], on='SMILES', how
 
 # Configurations and model setup
 cfg = get_cfg_defaults()
-cfg.merge_from_file("case_study/GraphBAN_DA.yaml")
+cfg.merge_from_file("GraphBAN_DA.yaml")
 cfg.freeze()
 mkdir(args.folder_path)
 # Set up the DataLoader
@@ -117,8 +117,8 @@ def get_pth_files(folder_path):
 folder_path = args.folder_path
 pth_files = get_pth_files(folder_path)
 i = 31
-print(pth_files[0])
-print(pth_files[-1])
+#print(pth_files[0])
+#print(pth_files[-1])
 print(len(pth_files))
 for model in pth_files:
     
@@ -132,6 +132,7 @@ for model in pth_files:
 
 # Save results
      df_test[f'pred{i}'] = pred
+     #print(df_test.head())
      i+=1
 del df_test['esm']
 del df_test['fcfp']
@@ -139,15 +140,15 @@ smiles = df_test['SMILES']
 proteins = df_test['Protein']
 del df_test['SMILES']
 del df_test['Protein']
-del df_test['Y']
+#del df_test['Y']
 df_test['row_average'] = df_test.mean(axis=1)
-
+print(df_test.head())
 new_data = pd.DataFrame()
 new_data['SMILES'] = smiles
 new_data['Protein'] = proteins
 
 new_data['predicted_value'] = df_test['row_average']
-
+print(new_data.head())
 new_data.to_csv(args.folder_path+'/' + args.save_dir, index=False)
 
 #print("\nThe prediction probabilities saved in result/" + args.save_dir + '\n')
