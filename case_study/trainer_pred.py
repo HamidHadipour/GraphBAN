@@ -120,12 +120,12 @@ class Trainer(object):
         num_batches = len(data_loader)
         with torch.no_grad():
             self.model.eval()
-            for i, (v_d, sm, v_p,esm, labels) in enumerate(data_loader):
+            for i, (v_d, sm, v_p,esm) in enumerate(data_loader):
                 sm = torch.tensor(sm ,dtype=torch.float32)
                 sm = torch.reshape(sm,(sm.shape[0],1,384))
                 esm = torch.tensor(esm ,dtype=torch.float32)
                 esm = torch.reshape(esm,(sm.shape[0],1,1280))
-                v_d, sm,  v_p, esm, labels = v_d.to(self.device),sm.to(self.device), v_p.to(self.device), esm.to(self.device), labels.float().to(self.device)
+                v_d, sm,  v_p, esm = v_d.to(self.device),sm.to(self.device), v_p.to(self.device), esm.to(self.device)
                 device = self.device
                 
               
@@ -135,9 +135,9 @@ class Trainer(object):
                  
                 if self.n_class == 1:
                    
-                    n, loss = binary_cross_entropy(score, labels)
+                    n= binary_cross_entropy(score)
                 else:
-                    n, loss = cross_entropy_logits(score, labels)
+                    n= cross_entropy_logits(score)
               
                 
                 y_pred = y_pred + n.to("cpu").tolist()
