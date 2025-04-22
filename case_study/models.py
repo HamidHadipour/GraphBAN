@@ -25,25 +25,20 @@ def binary_cross_entropy(pred_output, labels):
     n = torch.squeeze(m(pred_output), 1)
     loss = loss_fct(n, labels)
     return n, loss
-'''
-def binary_cross_entropy(pred_output, labels, weights):
+
+def binary_cross_entropy(pred_output,  weights):
     loss_fct = torch.nn.BCELoss(weight=weights)
     m = nn.Sigmoid()
     n = torch.squeeze(m(pred_output), 1)
-    loss = loss_fct(n, labels.float())
-    return n, loss
-'''
-def cross_entropy_logits(linear_output, label, weights=None):
+    #loss = loss_fct(n, labels.float())
+    return n
+
+def cross_entropy_logits(linear_output, weights=None):
     class_output = F.log_softmax(linear_output, dim=1)
     n = F.softmax(linear_output, dim=1)[:, 1]
-    max_class = class_output.max(1)
-    y_hat = max_class[1]  # get the index of the max log-probability
-    if weights is None:
-        loss = nn.NLLLoss()(class_output, label.type_as(y_hat).view(label.size(0)))
-    else:
-        losses = nn.NLLLoss(reduction="none")(class_output, label.type_as(y_hat).view(label.size(0)))
-        loss = torch.sum(weights * losses) / torch.sum(weights)
-    return n, loss
+
+
+    return n
 
 
 def entropy_logits(linear_output):
