@@ -1,10 +1,9 @@
 ## The case study section includes all the codes and datasets used to implement the case study analysis in the paper.
-## Due to the large size of trained models, in case of need, please check the shared files below for each set of models trained with different train sets. If you have any problem downloading the files, please contact by email at (hamid.hadipour@umanitoba.ca)<br>
+## Due to the large size of trained models, in case of need, please check the shared Zenodo link below. If you have any problem downloading the files, please contact by email at (hamid.hadipour@umanitoba.ca)<br>
 
--[BioSNAP Trained Models](https://umanitoba-my.sharepoint.com/:u:/g/personal/hamid_hadipour_umanitoba_ca1/EUm47tS6nlNEjIpQcJjDCdoBb8nh2TnTqc7VbFGIe2FMpw?e=UVvPcM)<br>
--[BindingDB Trained Models](https://umanitoba-my.sharepoint.com/:u:/g/personal/hamid_hadipour_umanitoba_ca1/EXHP3lyMCE5Lpt8xV8lAyFYBqxI5PU3JUWwO7k3X5y6KgQ?e=OB3eEO)<br>
--[KIBA Trained Models](https://umanitoba-my.sharepoint.com/:u:/g/personal/hamid_hadipour_umanitoba_ca1/EbWxe-y2PWpLpxVxVrDIxUYBdtBAvz_OSbqHE4-GcmH50w?e=2DkqaP)<br>
-## If you have your datasets to train and make the prediction, please run the below command.
+https://zenodo.org/records/14813233 
+
+## If you have your datasets to train and make the prediction, please run the command below.
 
 ```
 python run_model.py --train_path <path> --val_path <path> --test_path <path> --seed <int> --mode <inductive> --teacher_path <path> --result_path <path>
